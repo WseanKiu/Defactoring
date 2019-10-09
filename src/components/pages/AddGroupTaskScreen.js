@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import styles from '../styles/AddGroupTaskStyle';
+import { AddGroupTask } from "../helpers/FetchData";
 
 class AddGrouptaskScreen extends Component {
   constructor(props) {
@@ -66,20 +67,7 @@ class AddGrouptaskScreen extends Component {
       this.state.server_ip +
       "/dlgtd/controller/addTaskController.php";
 
-    fetch(url, {
-      method: "post",
-      header: {
-        Accept: "application/json",
-        "Content-type": "applicantion/json"
-      },
-      body: JSON.stringify({
-        user_id: this.state.user_id,
-        task_name: task_name,
-        task_description: task_description,
-        task_dueDate: due_date,
-        task_type: 'group'
-      })
-    })
+    AddTask(url, this.state.user_id, task_name, task_description, due_date, 'group')
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.error === false) {

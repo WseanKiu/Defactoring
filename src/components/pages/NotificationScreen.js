@@ -15,6 +15,8 @@ import Modal from "react-native-modal";
 import styles from "../styles/style";
 import styles2 from '../styles/NotificationStyle';
 import formsStyle from "../styles/formsStyle";
+import LoadingScreen from '../helpers/LoadingScreen';
+import { GetNotification } from "../helpers/FetchData";
 
 class NotificationScreen extends React.Component {
   constructor(props) {
@@ -63,16 +65,7 @@ class NotificationScreen extends React.Component {
         "http://" +
         this.state.ip_server +
         "/dlgtd/controller/getUserNotificationController.php";
-      fetch(url, {
-        method: "post",
-        header: {
-          Accept: "application/json",
-          "Content-type": "applicantion/json"
-        },
-        body: JSON.stringify({
-          user_code: this.state.user_code
-        })
-      })
+      GetNotification(url, this.state.user_code)
         .then(response => response.json())
         .then(responseJson => {
 
@@ -112,21 +105,8 @@ class NotificationScreen extends React.Component {
       "http://" +
       this.state.ip_server +
       "/dlgtd/controller/acceptTaskController.php";
-    fetch(url, {
-      method: "post",
-      header: {
-        Accept: "application/json",
-        "Content-type": "applicantion/json"
-      },
-      body: JSON.stringify({
-        task_id: task_id,
-        subtask_id: subtask_id,
-        user_id: this.state.user_id,
-        user_code: this.state.user_code,
-        notif_id: notif_id,
-        notif_to: user_id
-      })
-    })
+
+      AcceptTask(url, task_id, subtask_id, this.state.user_id, this.state.user_code, notif_id, user_id)
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.error) {
@@ -225,9 +205,7 @@ class NotificationScreen extends React.Component {
   render() {
 
     return this.state.isLoading ? (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="#000000" animating />
-      </View>
+      <LoadingScreen/>
     ) : (
         <View style={styles.notifBackground}>
           <Modal

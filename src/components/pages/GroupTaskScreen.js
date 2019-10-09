@@ -5,13 +5,14 @@ import {
     TouchableOpacity,
     AsyncStorage,
     FlatList,
-    ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icon_2 from "react-native-vector-icons/MaterialCommunityIcons";
 import DlgtdLogo from '../../assets/logo/DlgtdLogo';
 import styles from '../styles/style';
+import LoadingScreen from '../helpers/LoadingScreen';
 import Bar from 'react-native-progress/Bar';
+import { getTasks } from '../helpers/FetchData';
 import FLoatingAddGroupTask from '../helpers/groupTask/FloatingAddGroupTask';
 
 class GroupTaskScreen extends Component {
@@ -27,33 +28,6 @@ class GroupTaskScreen extends Component {
 
     componentWillMount() {
         this._getAsyncData();
-    }
-
-    componentDidMount() {
-        this.timer = setInterval(() => {
-            const url =
-                "http://" +
-                this.state.ip_server +
-                "/dlgtd/controller/getUserGroupTaskController.php";
-            fetch(url, {
-                method: "post",
-                header: {
-                    Accept: "application/json",
-                    "Content-type": "applicantion/json"
-                },
-                body: JSON.stringify({
-                    user_id: this.state.user_id
-                })
-            })
-                .then(response => response.json())
-                .then(responseJson => {
-                    this.setState({
-                        taskContainer: responseJson.items,
-                        isLoading: false
-                    });
-                })
-                .catch(error => {});
-        }, 1000);
     }
 
     componentWillUnmount() {
@@ -73,14 +47,33 @@ class GroupTaskScreen extends Component {
             ip_server: server_ip,
             user_id: user_id
         });
+
+        const url =
+            "http://" +
+            this.state.ip_server +
+            "/dlgtd/controller/getUserGroupTaskController.php";
+
+        this.timer = setInterval(() => {
+            getTasks(url, this.state.user_id)
+            .then(response => response.json())
+            .then(responseJson => {
+                this.setState({
+                    taskContainer: responseJson.items,
+                    isLoading: false
+                })
+            })
+            .catch(error => {
+                alert(error);
+            });
+        }, 1000);
     };
 
     renderItem = ({ item }) => {
         const task_id = item.task_id;
         return (
             <TouchableOpacity
-                onPress={() => { 
-                    this.props.navigation.navigate("ViewGroupTaskScreen", { task_id: task_id, server_ip: this.state.ip_server, task_creator: this.state.user_id == item.user_id? true : false });
+                onPress={() => {
+                    this.props.navigation.navigate("ViewGroupTaskScreen", { task_id: task_id, server_ip: this.state.ip_server, task_creator: this.state.user_id == item.user_id ? true : false });
                 }}
                 style={{
                     paddingTop: 10,
@@ -99,16 +92,16 @@ class GroupTaskScreen extends Component {
                         {item.task_status == 'prioritize' ? <Icon name="star" size={25} color="#f1c40f" /> : null}
                         <Text style={{ fontSize: 20, color: "#008a00", fontWeight: '600' }}>{item.title}</Text>
                     </View>
-                    <Text style={{color: "#8e8e93", paddingVertical: 5}}>Members {item.total_members}</Text>
+                    <Text style={{ color: "#8e8e93", paddingVertical: 5 }}>Members {item.total_members}</Text>
                 </View>
 
                 {
                     item.due_date ?
-                    <View style={{ flexDirection: 'row' }}>
-                        <Icon_2 name="calendar-clock" size={18} color="#e74c3c" />
-                        <Text style={{ fontSize: 10, paddingLeft: 5, alignSelf: 'center', paddingBottom: 10, color: "#696969"}}>{item.due_date}</Text>
-                    </View>
-                    : null
+                        <View style={{ flexDirection: 'row' }}>
+                            <Icon_2 name="calendar-clock" size={18} color="#e74c3c" />
+                            <Text style={{ fontSize: 10, paddingLeft: 5, alignSelf: 'center', paddingBottom: 10, color: "#696969" }}>{item.due_date}</Text>
+                        </View>
+                        : null
                 }
 
                 {
@@ -122,7 +115,7 @@ class GroupTaskScreen extends Component {
 
     renderSeparator = () => {
         return (
-            <View style={{ height: 1}}/>
+            <View style={{ height: 1 }} />
         );
     };
 
@@ -135,17 +128,17 @@ class GroupTaskScreen extends Component {
             ),
             headerTitle: (
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("AuthScreen")}
-                  style={{ flexDirection: "row", alignItems: "center" }}
+                    onPress={() => navigation.navigate("AuthScreen")}
+                    style={{ flexDirection: "row", alignItems: "center" }}
                 >
-                  <DlgtdLogo />
-                  <Text>DLGTD</Text>
+                    <DlgtdLogo />
+                    <Text>DLGTD</Text>
                 </TouchableOpacity>
             ),
             headerRight: (
                 <View style={styles.rightNav}>
                     <TouchableOpacity onPress={() => navigation.navigate("Notification")}>
-                    <Icon style={styles.navItem} name="notifications" size={25} />
+                        <Icon style={styles.navItem} name="notifications" size={25} />
                     </TouchableOpacity>
                 </View>
             ),
@@ -154,9 +147,7 @@ class GroupTaskScreen extends Component {
 
     render() {
         return this.state.isLoading ? (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <ActivityIndicator size="large" color="#000000" animating />
-            </View>
+            <LoadingScreen />
         ) : (
                 <View style={styles.container}>
                     <FlatList

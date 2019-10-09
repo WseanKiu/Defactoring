@@ -10,6 +10,8 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DlgtdLogo from '../../assets/logo/DlgtdLogo';
 import styles from '../styles/style';
+import LoadingScreen from '../helpers/LoadingScreen';
+import { getTasks } from '../helpers/FetchData';
 
 class ArchiveScreen extends Component {
     constructor(props) {
@@ -48,16 +50,7 @@ class ArchiveScreen extends Component {
             "http://" +
             this.state.ip_server +
             "/dlgtd/controller/getArchiveTaskController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                user_id: this.state.user_id
-            })
-        })
+        getTasks(url, this.state.user_id)
             .then(response => response.json())
             .then(responseJson => {
                 this.setState({
@@ -68,26 +61,16 @@ class ArchiveScreen extends Component {
             .catch(error => {
             });
 
-            this.handleResponse();
+        this.handleResponse();
     };
 
     handleResponse = () => {
         this.timer = setInterval(() => {
-
             const url =
                 "http://" +
                 this.state.ip_server +
                 "/dlgtd/controller/getArchiveTaskController.php";
-            fetch(url, {
-                method: "post",
-                header: {
-                    Accept: "application/json",
-                    "Content-type": "applicantion/json"
-                },
-                body: JSON.stringify({
-                    user_id: this.state.user_id
-                })
-            })
+            getTasks(url, this.state.user_id)
                 .then(response => response.json())
                 .then(responseJson => {
                     this.setState({
@@ -97,34 +80,8 @@ class ArchiveScreen extends Component {
                 })
                 .catch(error => {
                 });
-
         }, 1000);
     }
-
-    checkDailyTask = (id) => {
-
-        const url =
-            "http://" +
-            this.state.ip_server +
-            "/dlgtd/controller/checkDailyTaskController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                id: id
-            })
-        })
-            .then(response => response.json())
-            .then(responseJson => {
-                
-            })
-            .catch(error => {
-            });
-    }
-
 
     static navigationOptions = ({ navigation }) => {
         return {
@@ -155,7 +112,7 @@ class ArchiveScreen extends Component {
     renderItem = ({ item }) => {
         return (
             <TouchableOpacity
-                onPress={() => { 
+                onPress={() => {
                     alert('task_id: ' + item.task_id);
                 }}
                 style={{
@@ -171,8 +128,8 @@ class ArchiveScreen extends Component {
                 }}>
 
                 <View style={{ flex: 1, alignContent: "center" }}>
-                    <Text style={{ color: '#95a5a6', fontSize: 18, fontWeight: '500'}}>{item.task_name}</Text>
-                    <Text style={{color: '#bdc3c7', fontSize: 16}}>{item.task_description}</Text>
+                    <Text style={{ color: '#95a5a6', fontSize: 18, fontWeight: '500' }}>{item.task_name}</Text>
+                    <Text style={{ color: '#bdc3c7', fontSize: 16 }}>{item.task_description}</Text>
                 </View>
             </TouchableOpacity>
         );
@@ -186,9 +143,7 @@ class ArchiveScreen extends Component {
 
     render() {
         return this.state.isLoading ? (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <ActivityIndicator size="large" color="#000000" animating />
-            </View>
+            <LoadingScreen/>
         ) : (
                 <View style={styles.container}>
                     <FlatList

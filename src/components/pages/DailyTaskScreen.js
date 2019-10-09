@@ -5,14 +5,15 @@ import {
     TouchableOpacity,
     AsyncStorage,
     FlatList,
-    ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icon_2 from "react-native-vector-icons/MaterialCommunityIcons";
 import DlgtdLogo from '../../assets/logo/DlgtdLogo';
 import styles from '../styles/style';
+import LoadingScreen from '../helpers/LoadingScreen';
 import moment from 'moment';
 import AddDailyTaskButton from '../helpers/AddDailyTaskButton';
+import { getTasks, checkDaily } from '../helpers/FetchData';
 
 class DailyTaskScreen extends Component {
     constructor(props) {
@@ -51,16 +52,8 @@ class DailyTaskScreen extends Component {
             "http://" +
             this.state.ip_server +
             "/dlgtd/controller/getDailyTaskController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                user_id: this.state.user_id
-            })
-        })
+
+        getTasks(url, this.state.user_id)
             .then(response => response.json())
             .then(responseJson => {
                 this.setState({
@@ -68,9 +61,9 @@ class DailyTaskScreen extends Component {
                     isLoading: false
                 });
             })
-            .catch(error => {});
+            .catch(error => { });
 
-            this.handleResponse();
+        this.handleResponse();
     };
 
     handleResponse = () => {
@@ -80,16 +73,8 @@ class DailyTaskScreen extends Component {
                 "http://" +
                 this.state.ip_server +
                 "/dlgtd/controller/getDailyTaskController.php";
-            fetch(url, {
-                method: "post",
-                header: {
-                    Accept: "application/json",
-                    "Content-type": "applicantion/json"
-                },
-                body: JSON.stringify({
-                    user_id: this.state.user_id
-                })
-            })
+
+            getTasks(url, this.state.user_id)
                 .then(response => response.json())
                 .then(responseJson => {
                     this.setState({
@@ -97,8 +82,7 @@ class DailyTaskScreen extends Component {
                         isLoading: false
                     });
                 })
-                .catch(error => {
-                });
+                .catch(error => { });
 
         }, 1000);
     }
@@ -109,21 +93,12 @@ class DailyTaskScreen extends Component {
             "http://" +
             this.state.ip_server +
             "/dlgtd/controller/checkDailyTaskController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                id: id
-            })
-        })
+        checkDaily(url, id)
             .then(response => response.json())
             .then(responseJson => {
-                
+
             })
-            .catch(error => {});
+            .catch(error => { });
     }
 
 
@@ -176,7 +151,7 @@ class DailyTaskScreen extends Component {
                 <View style={{ flex: 1, alignContent: "center" }}>
 
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <TouchableOpacity onPress={() => {this.checkDailyTask(item.id)}}>
+                        <TouchableOpacity onPress={() => { this.checkDailyTask(item.id) }}>
                             <Icon_2 name={item.status == 'done' ?
                                 "checkbox-marked-outline"
                                 : "checkbox-blank-outline"} size={30} style={{ paddingRight: 10 }} />
@@ -207,9 +182,7 @@ class DailyTaskScreen extends Component {
 
     render() {
         return this.state.isLoading ? (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <ActivityIndicator size="large" color="#000000" animating />
-            </View>
+            <LoadingScreen />
         ) : (
                 <View style={styles.container}>
                     <FlatList

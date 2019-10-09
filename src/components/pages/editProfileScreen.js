@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import styles from '../styles/EditProfileStyle';
 import DatePicker from "react-native-datepicker";
+import { getTasks, updateUserInfo } from '../helpers/FetchData';
 
 class SubscriptionScreen extends Component {
     constructor(props) {
@@ -61,16 +62,8 @@ class SubscriptionScreen extends Component {
         });
         const url =
             "http://" + this.state.ip_server + "/dlgtd/controller/getUserInfoController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                user_id: this.state.user_id
-            })
-        })
+        
+        getTasks(url, this.state.user_id)
             .then(response => response.json())
             .then(responseJson => {
                 this.setState({
@@ -88,11 +81,11 @@ class SubscriptionScreen extends Component {
     };
 
     checkInputs = () => {
-        if(this.state.f_name.trim().length>0 &&
-        this.state.l_name.trim().length>0 &&
-        this.state.email.trim().length>0 &&
-        this.state.contact.trim().length>0 &&
-        this.state.birthdate.trim().length>0) {
+        if (this.state.f_name.trim().length > 0 &&
+            this.state.l_name.trim().length > 0 &&
+            this.state.email.trim().length > 0 &&
+            this.state.contact.trim().length > 0 &&
+            this.state.birthdate.trim().length > 0) {
             this.updateUser();
         } else {
             Alert.alert(
@@ -113,21 +106,7 @@ class SubscriptionScreen extends Component {
         const { contact } = this.state;
         const { birthdate } = this.state;
 
-        fetch('http://' + this.state.ip_server + '/dlgtd/controller/updateUserInfoController.php', {
-            method: 'post',
-            header: {
-                'Accept': 'application/json',
-                'Content-type': 'applicantion/json'
-            },
-            body: JSON.stringify({
-                user_id: this.state.user_id,
-                fname: f_name,
-                lname: l_name,
-                email: email,
-                contact: contact,
-                birthdate: birthdate
-            })
-        })
+        updateUserInfo(url, this.state.user_id, f_name, l_name, email, contact, birthdate)
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.error) {
@@ -138,7 +117,6 @@ class SubscriptionScreen extends Component {
             })
             .catch((error) => {
                 alert(error + server_ip);
-                // console.error(error);
             });
     }
 

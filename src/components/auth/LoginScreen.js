@@ -10,7 +10,7 @@ import {
     Image,
     Alert
 } from 'react-native';
-import styles from './../styles/loginStyle';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default class LoginScreen extends React.Component {
     constructor(props) {
@@ -38,7 +38,10 @@ export default class LoginScreen extends React.Component {
         const { username } = this.state;
         const { password } = this.state;
 
+        // alert(this.state.ip_server);
+
         fetch('http://' + this.state.ip_server + '/dlgtd/controller/loginController.php', {
+            // fetch('http://192.168.254.108/dlgtd/controller/loginController.php', {
             method: 'post',
             header: {
                 'Accept': 'application/json',
@@ -63,6 +66,7 @@ export default class LoginScreen extends React.Component {
             })
             .catch((error) => {
                 alert(error + server_ip);
+                // console.error(error);
             });
     }
 
@@ -83,6 +87,7 @@ export default class LoginScreen extends React.Component {
                 <Image style={styles.logo} source={require('../../assets/logo/dlgtd_logo1.png')} />
 
                 <View style={styles.inputContainer}>
+                    {/* <Image style={styles.inputIcon} source={{ uri: 'https://png.icons8.com/user/ultraviolet/50/3498db' }} /> */}
                     <TextInput style={styles.inputs}
                         placeholder="username"
                         keyboardType="email-address"
@@ -91,6 +96,7 @@ export default class LoginScreen extends React.Component {
                 </View>
 
                 <View style={styles.inputContainer}>
+                    {/* <Image style={styles.inputIcon} source={{ uri: 'https://png.icons8.com/message/ultraviolet/50/3498db' }} /> */}
                     <TextInput style={styles.inputs}
                         placeholder="Password"
                         secureTextEntry={true}
@@ -109,3 +115,56 @@ export default class LoginScreen extends React.Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+    },
+    logo: {
+        width: 150,
+        height: 150,
+        justifyContent: 'center',
+        marginBottom: 20,
+    },
+    inputContainer: {
+        borderBottomColor: '#657b83',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 30,
+        borderBottomWidth: 1,
+        width: 250,
+        height: 45,
+        marginBottom: 20,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    inputs: {
+        height: 45,
+        marginLeft: 16,
+        borderBottomColor: '#FFFFFF',
+        flex: 1,
+    },
+    inputIcon: {
+        width: 30,
+        height: 30,
+        marginLeft: 15,
+        justifyContent: 'center'
+    },
+    buttonContainer: {
+        height: 45,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 20,
+        width: 220,
+        borderRadius: 30,
+    },
+    sendButton: {
+        backgroundColor: "#FF4500",
+    },
+    buttonText: {
+        color: 'white',
+    }
+});

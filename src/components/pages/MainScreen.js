@@ -5,14 +5,15 @@ import {
   View,
   TouchableOpacity,
   FlatList,
-  ActivityIndicator,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon_2 from "react-native-vector-icons/MaterialCommunityIcons";
 import styles from "../styles/style";
 import DlgtdLogo from "../../assets/logo/DlgtdLogo";
 import FloatingAddButton from "../helpers/FloatingAddButton";
+import LoadingScreen from '../helpers/LoadingScreen';
 import Bar from "react-native-progress/Bar";
+import { getTasks } from '../helpers/FetchData';
 
 class MainScreen extends React.Component {
   constructor(props) {
@@ -63,16 +64,7 @@ class MainScreen extends React.Component {
         "http://" +
         this.state.ip_server +
         "/dlgtd/controller/getUserTaskController.php";
-      fetch(url, {
-        method: "post",
-        header: {
-          Accept: "application/json",
-          "Content-type": "applicantion/json"
-        },
-        body: JSON.stringify({
-          user_id: this.state.user_id
-        })
-      })
+      getTasks(url, this.state.user_id)
         .then(response => response.json())
         .then(responseJson => {
           this.setState({
@@ -172,9 +164,7 @@ class MainScreen extends React.Component {
 
   render() {
     return this.state.isLoading ? (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="#000000" animating />
-      </View>
+      <LoadingScreen />
     ) : (
         <View style={[styles.container, {}]}>
           <FloatingAddButton navigation={this.props.navigation} />

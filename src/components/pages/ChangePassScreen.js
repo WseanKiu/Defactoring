@@ -9,6 +9,7 @@ import {
     TouchableOpacity
 } from "react-native";
 import styles from '../styles/ChangePassStyle';
+import { ChangePass } from "../helpers/FetchData";
 
 class ChangePassScreen extends Component {
     constructor(props) {
@@ -26,23 +27,6 @@ class ChangePassScreen extends Component {
     static navigationOptions = {
         title: "Change password"
     };
-
-    componentWillMount() {
-        this._getAsyncData();
-
-        var day = new Date();
-        var temp =
-            day.getFullYear() +
-            "-" +
-            (day.getMonth() + 1) +
-            "-" +
-            day.getDate() +
-            " " +
-            day.getHours() +
-            ":" +
-            day.getMinutes();
-        this.setState({ present_date: temp });
-    }
 
     _getAsyncData = async () => {
         const user_id = await AsyncStorage.getItem("user_id");
@@ -89,17 +73,7 @@ class ChangePassScreen extends Component {
     updateUser = () => {
         const url =
         "http://" + this.state.ip_server + "/dlgtd/controller/changePasswordController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                user_id: this.state.user_id,
-                new_pass: this.state.password2
-            })
-        })
+        ChangePass(url, this.state.user_id, this.state.password2)
         .then(response => response.json())
         .then(responseJson => {
             if(responseJson.error) {

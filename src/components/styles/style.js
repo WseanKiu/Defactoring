@@ -38,15 +38,6 @@ export default StyleSheet.create({
         backgroundColor: '#FFFFFF',
         borderRadius:10,
     },
-    // notifContainer: {
-    //     flex: 1,
-    //     paddingTop: 10,
-    //     paddingLeft: 30,
-    //     paddingRight: 30,
-    //     paddingBottom: 2,
-    //     backgroundColor: '#ecf0f1'    
-    // },
-
     notifTabs: {
         paddingTop: 5,
         flexDirection: 'row',
@@ -193,8 +184,6 @@ export default StyleSheet.create({
         fontSize: 14,
     },
     dueDateBadge: {
-        // position: 'absolute',
-        // justifyContent: 'center',
         alignSelf: 'flex-start',
     },
     dueDateStyle: {

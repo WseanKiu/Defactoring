@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import {
-  ActivityIndicator,
   View,
   Text,
-  StyleSheet,
   ScrollView,
   AsyncStorage,
   TouchableOpacity,
@@ -11,6 +9,8 @@ import {
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import styles from '../styles/AddDailyTaskStyle';
+import { addUserTask } from '../helpers/FetchData';
+import LoadingScreen from '../helpers/LoadingScreen';
 
 class AddTaskScreen extends Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class AddTaskScreen extends Component {
       isLoading: false,
       due_date: "",
       dateText: "Pick a time",
-      present_date: ""
+
     };
     this._getAsyncData();
   }
@@ -32,21 +32,6 @@ class AddTaskScreen extends Component {
     title: "Add daily task"
   };
 
-  componentDidMount() {
-    var day = new Date();
-    var temp =
-      day.getFullYear() +
-      "-" +
-      (day.getMonth() + 1) +
-      "-" +
-      day.getDate() +
-      " " +
-      day.getHours() +
-      ":" +
-      day.getMinutes();
-    this.setState({ present_date: temp });
-  }
-
   _getAsyncData = async () => {
     const server_ip = await AsyncStorage.getItem("server_ip");
     const user_id = await AsyncStorage.getItem("user_id");
@@ -54,15 +39,15 @@ class AddTaskScreen extends Component {
   };
 
   componentWillUnmount() {
-      this.setState({
-        server_ip: "",
-        user_id: "",
-        task_name: "",
-        task_description: "",
-        isLoading: false,
-        due_date: "",
-        dateText: "Pick a time",
-        present_date: ""
+    this.setState({
+      server_ip: "",
+      user_id: "",
+      task_name: "",
+      task_description: "",
+      isLoading: false,
+      due_date: "",
+      dateText: "Pick a time",
+
     });
   }
 
@@ -86,19 +71,7 @@ class AddTaskScreen extends Component {
       this.state.server_ip +
       "/dlgtd/controller/addDailyTaskController.php";
 
-    fetch(url, {
-      method: "post",
-      header: {
-        Accept: "application/json",
-        "Content-type": "applicantion/json"
-      },
-      body: JSON.stringify({
-        user_id: this.state.user_id,
-        task_name: task_name,
-        task_description: task_description,
-        time: due_date,
-      })
-    })
+    addUserTask(url, this.state.user_id, task_name, task_description, due_date)
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.error) {
@@ -107,16 +80,13 @@ class AddTaskScreen extends Component {
       })
       .catch(error => {
       });
-
-      this.props.navigation.navigate("DailyTask");
+    this.props.navigation.navigate("DailyTask");
   };
 
 
   render() {
     return this.state.isLoading ? (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="#000000" animating />
-      </View>
+      <LoadingScreen/>
     ) : (
         <ScrollView>
           <View style={styles.container}>
@@ -141,7 +111,7 @@ class AddTaskScreen extends Component {
               <DatePicker
                 style={{ width: 200 }}
                 mode="time"
-                date={this.state.due_date != ''? this.state.due_date : null}
+                date={this.state.due_date != '' ? this.state.due_date : null}
                 format="HH:mm"
                 is24Hour={true}
                 placeholder="Select time"
