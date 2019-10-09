@@ -1,0 +1,9 @@
+Datetime picker:
+$ npm install react-native-datepicker --save
+$ npm install react-native-ui-xg --save
+
+Readable date: Moment js
+$ npm install moment --save
+
+Modal : https://github.com/react-native-community/react-native-modal
+$ npm install --save react-native-modal
