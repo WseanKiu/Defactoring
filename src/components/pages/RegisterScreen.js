@@ -14,6 +14,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import DatePicker from "react-native-datepicker";
 import styles from '../styles/RegisterStyle';
+import { fetchData } from '../helpers/FetchData';
 
 export default class RegisterScreen extends React.Component {
     constructor(props) {
@@ -86,22 +87,19 @@ export default class RegisterScreen extends React.Component {
         const { contact } = this.state;
         const { birthdate } = this.state;
 
-        fetch('http://' + this.state.ip_server + '/dlgtd/controller/registerController.php', {
-            method: 'post',
-            header: {
-                'Accept': 'application/json',
-                'Content-type': 'applicantion/json'
-            },
-            body: JSON.stringify({
-                fname: fname,
-                lname: lname,
-                username: username,
-                password: password,
-                email: email,
-                contact: contact,
-                birthdate: birthdate
-            })
-        })
+        const url = 'http://' + this.state.ip_server + '/dlgtd/controller/registerController.php';
+
+        let content = JSON.stringify({
+            fname: fname,
+            lname: lname,
+            username: username,
+            password: password,
+            email: email,
+            contact: contact,
+            birthdate: birthdate
+        });
+
+        fetchData(url, content)
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.error) {

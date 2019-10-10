@@ -22,6 +22,8 @@ import AddSubTaskButton from "../helpers/viewTask/AddSubTaskButton";
 import SubTask from "../helpers/viewTask/SubTask";
 import formsStyle from "../styles/formsStyle";
 import styles from "../styles/style";
+import { fetchData } from "../helpers/FetchData";
+import LoadingScreen from "../helpers/LoadingScreen";
 
 class ViewSubtaskScreen extends React.Component {
   constructor(props) {
@@ -58,17 +60,13 @@ class ViewSubtaskScreen extends React.Component {
       "http://" +
       this.props.navigation.getParam("server_ip", "") +
       "/dlgtd/controller/viewTaskController.php";
-    fetch(url, {
-      method: "post",
-      header: {
-        Accept: "application/json",
-        "Content-type": "applicantion/json"
-      },
-      body: JSON.stringify({
-        user_id: this.state.user_id,
-        task_id: this.props.navigation.getParam("task_id", "0")
-      })
-    })
+
+    let content = JSON.stringify({
+      user_id: this.state.user_id,
+      task_id: this.props.navigation.getParam("task_id", "0")
+    });
+
+    fetchData(url, content)
       .then(response => response.json())
       .then(responseJson => {
         this.setState({
@@ -94,16 +92,12 @@ class ViewSubtaskScreen extends React.Component {
       "http://" +
       this.props.navigation.getParam("server_ip", "") +
       "/dlgtd/controller/getSubTaskController.php";
-    fetch(url_2, {
-      method: "post",
-      header: {
-        Accept: "application/json",
-        "Content-type": "applicantion/json"
-      },
-      body: JSON.stringify({
-        task_id: this.props.navigation.getParam("task_id", "0")
-      })
-    })
+
+    let content2 = JSON.stringify({
+      task_id: this.props.navigation.getParam("task_id", "0")
+    });
+
+    fetchData(url_2, content2)
       .then(response => response.json())
       .then(responseJson => {
 
@@ -116,20 +110,7 @@ class ViewSubtaskScreen extends React.Component {
       });
 
     this.timer = setInterval(() => {
-      const url_2 =
-        "http://" +
-        this.props.navigation.getParam("server_ip", "") +
-        "/dlgtd/controller/getSubTaskController.php";
-      fetch(url_2, {
-        method: "post",
-        header: {
-          Accept: "application/json",
-          "Content-type": "applicantion/json"
-        },
-        body: JSON.stringify({
-          task_id: this.props.navigation.getParam("task_id", "0")
-        })
-      })
+      fetchData(url_2, content2)
         .then(response => response.json())
         .then(responseJson => {
           JSON.stringify(this.state.subTaskArray) == JSON.stringify(responseJson.items) ?
@@ -139,8 +120,6 @@ class ViewSubtaskScreen extends React.Component {
             });
           responseJson = null;
         })
-        .catch(error => {
-        });
     }, 100);
   }
 
@@ -153,25 +132,21 @@ class ViewSubtaskScreen extends React.Component {
       '' : (values !== '' ? ', ' : "") + "task_description = '" + this.state.task_desc + "'";
     values += this.state.task_dueDate === this.state.var_dueDate ?
       '' : (values !== '' ? ', ' : "") + "due_date = " + (this.state.task_dueDate != '' ? "'" + this.state.task_dueDate + "'" : null) + " ";
-    values += (values !== '' ? ', ' : "") + "task_status = '" + this.state.task_status + "'"; 
+    values += (values !== '' ? ', ' : "") + "task_status = '" + this.state.task_status + "'";
 
     if (values != '') {
       const url =
         "http://" +
         this.props.navigation.getParam("server_ip", "") +
         "/dlgtd/controller/updateTaskController.php";
-      fetch(url, {
-        method: "post",
-        header: {
-          Accept: "application/json",
-          "Content-type": "applicantion/json"
-        },
-        body: JSON.stringify({
-          user_id: this.state.user_id,
-          task_id: this.props.navigation.getParam("task_id", "0"),
-          values: values,
-        })
-      })
+
+      let content = JSON.stringify({
+        user_id: this.state.user_id,
+        task_id: this.props.navigation.getParam("task_id", "0"),
+        values: values,
+      });
+
+      fetchData(url, content)
         .then(response => response.json())
         .then(responseJson => {
           if (responseJson.error === true) {
@@ -212,28 +187,22 @@ class ViewSubtaskScreen extends React.Component {
       "http://" +
       this.state.ip_server +
       "/dlgtd/controller/addSubTaskController.php";
-    fetch(url, {
-      method: "post",
-      header: {
-        Accept: "application/json",
-        "Content-type": "applicantion/json"
-      },
-      body: JSON.stringify({
-        task_id: this.props.navigation.getParam("task_id", "0"),
-        user_id: this.state.user_id,
-        subTask_name: this.state.subTaskName,
-        subTask_desc: this.state.subTaskDesc,
-        due_date: this.state.subTaskDue,
-      })
-    })
+
+    let content = JSON.stringify({
+      task_id: this.props.navigation.getParam("task_id", "0"),
+      user_id: this.state.user_id,
+      subTask_name: this.state.subTaskName,
+      subTask_desc: this.state.subTaskDesc,
+      due_date: this.state.subTaskDue,
+    });
+
+    fetchData(url, content)
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.error) {
           alert(responseJson.response);
         }
       })
-      .catch(error => {
-      });
   }
 
   updateSubTask = () => {
@@ -241,26 +210,20 @@ class ViewSubtaskScreen extends React.Component {
       "http://" +
       this.state.ip_server +
       "/dlgtd/controller/updateSubtaskController.php";
-    fetch(url, {
-      method: "post",
-      header: {
-        Accept: "application/json",
-        "Content-type": "applicantion/json"
-      },
-      body: JSON.stringify({
-        subtask_id: this.state.subTaskID,
-        subtask_name: this.state.subTaskName,
-        subtask_desc: this.state.subTaskDesc,
-        due_date: this.state.subTaskDue
-      })
-    })
+
+    let content = JSON.stringify({
+      subtask_id: this.state.subTaskID,
+      subtask_name: this.state.subTaskName,
+      subtask_desc: this.state.subTaskDesc,
+      due_date: this.state.subTaskDue
+    });
+
+    fetchData(url, content)
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.error) {
         }
       })
-      .catch(error => {
-      });
   }
 
   deleteTask = () => {
@@ -268,16 +231,12 @@ class ViewSubtaskScreen extends React.Component {
       "http://" +
       this.state.ip_server +
       "/dlgtd/controller/deleteTaskController.php";
-    fetch(url, {
-      method: "post",
-      header: {
-        Accept: "application/json",
-        "Content-type": "applicantion/json"
-      },
-      body: JSON.stringify({
-        task_id: this.props.navigation.getParam("task_id", "0")
-      })
-    })
+    
+    let content = JSON.stringify({
+      task_id: this.props.navigation.getParam("task_id", "0")
+    });
+
+    fetchData(url, content)
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.error) {
@@ -336,7 +295,7 @@ class ViewSubtaskScreen extends React.Component {
   };
 
   toggleTaskStatus = () => {
-    var temp = this.state.task_status == 'prioritize'? "active" : "prioritize";
+    var temp = this.state.task_status == 'prioritize' ? "active" : "prioritize";
     this.setState({
       task_status: temp
     });
@@ -396,17 +355,13 @@ class ViewSubtaskScreen extends React.Component {
       "http://" +
       this.state.ip_server +
       "/dlgtd/controller/deleteSubtaskController.php";
-    fetch(url, {
-      method: "post",
-      header: {
-        Accept: "application/json",
-        "Content-type": "applicantion/json"
-      },
-      body: JSON.stringify({
-        task_id: this.props.navigation.getParam("task_id", "0"),
-        subtask_id: id
-      })
-    })
+
+    let content = JSON.stringify({
+      task_id: this.props.navigation.getParam("task_id", "0"),
+      subtask_id: id
+    });
+
+    fetchData(url, content)
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.error) {
@@ -422,16 +377,12 @@ class ViewSubtaskScreen extends React.Component {
       "http://" +
       this.state.ip_server +
       "/dlgtd/controller/checkSubtaskController.php";
-    fetch(url, {
-      method: "post",
-      header: {
-        Accept: "application/json",
-        "Content-type": "applicantion/json"
-      },
-      body: JSON.stringify({
-        subtask_id: id
-      })
-    })
+
+    let content = JSON.stringify({
+      subtask_id: id
+    });
+
+    fetchData(url, content)
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.error) {
@@ -459,11 +410,9 @@ class ViewSubtaskScreen extends React.Component {
     });
 
     return this.state.isLoading ? (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="tomato" animating />
-      </View>
+      <LoadingScreen/>
     ) : (
-        <ScrollView style={{backgroundColor: "#ebf0f7"}}>
+        <ScrollView style={{ backgroundColor: "#ebf0f7" }}>
           <Modal
             isVisible={this.state.isModalVisible}>
             <View style={styles.modalContainer}>
@@ -569,7 +518,7 @@ class ViewSubtaskScreen extends React.Component {
                   }}
                 />
 
-                <TouchableOpacity style={{ marginLeft: 7 }} onPress={() => this.setState({subTaskDue: ''})}>
+                <TouchableOpacity style={{ marginLeft: 7 }} onPress={() => this.setState({ subTaskDue: '' })}>
                   <Icon_2 name="calendar-remove" size={30} />
                 </TouchableOpacity>
               </View>
@@ -630,7 +579,7 @@ class ViewSubtaskScreen extends React.Component {
               <Icon name="delete" size={30} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.prioritizeButton} onPress={this.toggleTaskStatus}>
-              <Icon name={this.state.task_status == 'prioritize'? "star" : "star-border"} size={30} color={this.state.task_status == 'prioritize'?"#f1c40f": "#000"}/>
+              <Icon name={this.state.task_status == 'prioritize' ? "star" : "star-border"} size={30} color={this.state.task_status == 'prioritize' ? "#f1c40f" : "#000"} />
               {/* <Icon name="star-border" size={30}/> */}
             </TouchableOpacity>
             <AddSubTaskButton addSubTask={() => this.setState({ isModalVisible: true })} />

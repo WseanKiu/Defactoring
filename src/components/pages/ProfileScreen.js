@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-    StyleSheet,
     AsyncStorage,
     ActivityIndicator,
     Text,
@@ -17,7 +16,7 @@ import styles from '../styles/ProfileStyle';
 import styles2 from "../styles/style";
 import formsStyle from '../styles/formsStyle';
 import { Avatar } from "react-native-elements";
-import { getTasks, FeedBack } from '../helpers/FetchData';
+import { getTasks, FeedBack, fetchUsingUserID, fetchData, fetchTest } from '../helpers/FetchData';
 
 export default class ProfileScreen extends Component {
     constructor(props) {
@@ -84,7 +83,12 @@ export default class ProfileScreen extends Component {
 
         const url =
             "http://" + this.state.ip_server + "/dlgtd/controller/getUserInfoController.php";
-        getTasks(url, this.state.user_id)
+
+        let content = JSON.stringify({
+            user_id: this.state.user_id
+        });
+
+        fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
                 this.setState({
@@ -117,7 +121,13 @@ export default class ProfileScreen extends Component {
     sendFeedBack() {
         const url =
             "http://" + this.state.ip_server + "/dlgtd/controller/sendFeedbackController.php";
-        FeedBack(url, this.state.user_id, this.state.content)
+
+        let content = JSON.stringify({
+            user_id: this.state.user_id,
+            content: this.state.content
+        });
+
+        fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
             })
@@ -133,16 +143,9 @@ export default class ProfileScreen extends Component {
 
     subscribeUser() {
         const url = "http://" + this.state.ip_server + "/dlgtd/controller/getUserInfoController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                user_id: this.state.user_id
-            })
-        })
+
+        let content = JSON.stringify({ user_id: this.state.user_id });
+        fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
             })

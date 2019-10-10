@@ -12,7 +12,7 @@ import DlgtdLogo from '../../assets/logo/DlgtdLogo';
 import styles from '../styles/style';
 import LoadingScreen from '../helpers/LoadingScreen';
 import Bar from 'react-native-progress/Bar';
-import { getTasks } from '../helpers/FetchData';
+import { fetchData } from '../helpers/FetchData';
 import FLoatingAddGroupTask from '../helpers/groupTask/FloatingAddGroupTask';
 
 class GroupTaskScreen extends Component {
@@ -52,9 +52,13 @@ class GroupTaskScreen extends Component {
             "http://" +
             this.state.ip_server +
             "/dlgtd/controller/getUserGroupTaskController.php";
+        
+        const content = JSON.stringify({
+            user_id: user_id
+        });
 
         this.timer = setInterval(() => {
-            getTasks(url, this.state.user_id)
+            fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
                 this.setState({

@@ -23,6 +23,8 @@ import AddSubTaskButton from "../helpers/viewTask/AddSubTaskButton";
 import Lvl1Task from "../helpers/lvl2Task/Lvl1Task";
 import formsStyle from "../styles/formsStyle";
 import styles from "../styles/style";
+import { fetchData } from "../helpers/FetchData";
+import LoadingScreen from '../helpers/LoadingScreen';
 
 class ViewGroupTaskScreen extends React.Component {
     constructor(props) {
@@ -77,17 +79,13 @@ class ViewGroupTaskScreen extends React.Component {
             "http://" +
             this.props.navigation.getParam("server_ip", "") +
             "/dlgtd/controller/viewTaskController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                user_id: this.state.user_id,
-                task_id: this.props.navigation.getParam("task_id", "0")
-            })
-        })
+
+        let content = JSON.stringify({
+            user_id: this.state.user_id,
+            task_id: this.props.navigation.getParam("task_id", "0")
+        });
+
+        fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
                 this.setState({
@@ -112,16 +110,12 @@ class ViewGroupTaskScreen extends React.Component {
             "http://" +
             this.props.navigation.getParam("server_ip", "") +
             "/dlgtd/controller/getSubTaskController.php";
-        fetch(url_2, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                task_id: this.props.navigation.getParam("task_id", "0")
-            })
-        })
+
+        let content2 = JSON.stringify({
+            task_id: this.props.navigation.getParam("task_id", "0")
+        });
+
+        fetchData(url_2, content2)
             .then(response => response.json())
             .then(responseJson => {
 
@@ -133,21 +127,9 @@ class ViewGroupTaskScreen extends React.Component {
             .catch(error => {
                 alert(error + url);
             });
+
         this.timer = setInterval(() => {
-            const url_2 =
-                "http://" +
-                this.props.navigation.getParam("server_ip", "") +
-                "/dlgtd/controller/getSubTaskController.php";
-            fetch(url_2, {
-                method: "post",
-                header: {
-                    Accept: "application/json",
-                    "Content-type": "applicantion/json"
-                },
-                body: JSON.stringify({
-                    task_id: this.props.navigation.getParam("task_id", "0")
-                })
-            })
+            fetchData(url_2, content2)
                 .then(response => response.json())
                 .then(responseJson => {
                     JSON.stringify(this.state.subTaskArray) == JSON.stringify(responseJson.items) ?
@@ -179,18 +161,14 @@ class ViewGroupTaskScreen extends React.Component {
                 "http://" +
                 this.props.navigation.getParam("server_ip", "") +
                 "/dlgtd/controller/updateTaskController.php";
-            fetch(url, {
-                method: "post",
-                header: {
-                    Accept: "application/json",
-                    "Content-type": "applicantion/json"
-                },
-                body: JSON.stringify({
-                    user_id: this.state.user_id,
-                    task_id: this.props.navigation.getParam("task_id", "0"),
-                    values: values,
-                })
-            })
+
+            let content = JSON.stringify({
+                user_id: this.state.user_id,
+                task_id: this.props.navigation.getParam("task_id", "0"),
+                values: values,
+            });
+
+            fetchData(url, content)
                 .then(response => response.json())
                 .then(responseJson => {
                     if (responseJson.error === true) {
@@ -232,29 +210,23 @@ class ViewGroupTaskScreen extends React.Component {
             "http://" +
             this.state.ip_server +
             "/dlgtd/controller/addGroupSubtaskController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                task_id: this.props.navigation.getParam("task_id", "0"),
-                user_id: this.state.user_id,
-                subTask_name: this.state.subTaskName,
-                subTask_desc: this.state.subTaskDesc,
-                due_date: this.state.subTaskDue,
-                invite: this.state.subTaskAssign,
-            })
-        })
+
+        let content = JSON.stringify({
+            task_id: this.props.navigation.getParam("task_id", "0"),
+            user_id: this.state.user_id,
+            subTask_name: this.state.subTaskName,
+            subTask_desc: this.state.subTaskDesc,
+            due_date: this.state.subTaskDue,
+            invite: this.state.subTaskAssign,
+        });
+
+        fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
                 if (responseJson.error) {
                     alert(responseJson.response);
                 }
             })
-            .catch(error => {
-            });
     }
 
     updateSubTask = () => {
@@ -262,22 +234,18 @@ class ViewGroupTaskScreen extends React.Component {
             "http://" +
             this.state.ip_server +
             "/dlgtd/controller/updateGroupSubtaskController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                user_id: this.state.user_id,
-                task_id: this.props.navigation.getParam("task_id", "0"),
-                subtask_id: this.state.subTaskID,
-                subtask_name: this.state.subTaskName,
-                subtask_desc: this.state.subTaskDesc,
-                due_date: this.state.subTaskDue,
-                invite: this.state.subTaskAssign
-            })
-        })
+
+        let content = JSON.stringify({
+            user_id: this.state.user_id,
+            task_id: this.props.navigation.getParam("task_id", "0"),
+            subtask_id: this.state.subTaskID,
+            subtask_name: this.state.subTaskName,
+            subtask_desc: this.state.subTaskDesc,
+            due_date: this.state.subTaskDue,
+            invite: this.state.subTaskAssign
+        });
+
+        fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
                 if (responseJson.error) {
@@ -294,16 +262,12 @@ class ViewGroupTaskScreen extends React.Component {
             "http://" +
             this.state.ip_server +
             "/dlgtd/controller/deleteTaskController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                task_id: this.props.navigation.getParam("task_id", "0")
-            })
-        })
+
+        let content = JSON.stringify({
+            task_id: this.props.navigation.getParam("task_id", "0")
+        });
+        
+        fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
                 if (responseJson.error) {
@@ -440,16 +404,12 @@ class ViewGroupTaskScreen extends React.Component {
             "http://" +
             this.state.ip_server +
             "/dlgtd/controller/putTaskArchiveController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                task_id: this.props.navigation.getParam("task_id", "0"),
-            })
-        })
+
+        let content = JSON.stringify({
+            task_id: this.props.navigation.getParam("task_id", "0"),
+        });
+
+        fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
             })
@@ -477,25 +437,19 @@ class ViewGroupTaskScreen extends React.Component {
             "http://" +
             this.state.ip_server +
             "/dlgtd/controller/deleteSubtaskController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                task_id: this.props.navigation.getParam("task_id", "0"),
-                subtask_id: id
-            })
-        })
+
+        let content = JSON.stringify({
+            task_id: this.props.navigation.getParam("task_id", "0"),
+            subtask_id: id
+        });
+
+        fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
                 if (responseJson.error) {
                     alert(responseJson.response);
                 }
             })
-            .catch(error => {
-            });
     }
 
     subTaskProgress = (id, progress) => {
@@ -503,18 +457,14 @@ class ViewGroupTaskScreen extends React.Component {
             "http://" +
             this.state.ip_server +
             "/dlgtd/controller/updateSubtaskProgressController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                task_id: this.props.navigation.getParam("task_id", "0"),
-                subtask_id: id,
-                progress: progress
-            })
-        })
+
+        let content = JSON.stringify({
+            task_id: this.props.navigation.getParam("task_id", "0"),
+            subtask_id: id,
+            progress: progress
+        });
+
+        fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
                 if (responseJson.error) {
@@ -542,18 +492,14 @@ class ViewGroupTaskScreen extends React.Component {
             "http://" +
             this.state.ip_server +
             "/dlgtd/controller/leaveTaskController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                task_id: this.props.navigation.getParam("task_id", "0"),
-                subtask_id: id,
-                user_id: this.state.user_id
-            })
-        })
+
+        let content = JSON.stringify({
+            task_id: this.props.navigation.getParam("task_id", "0"),
+            subtask_id: id,
+            user_id: this.state.user_id
+        });
+
+        fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
                 if (responseJson.error) {
@@ -569,16 +515,12 @@ class ViewGroupTaskScreen extends React.Component {
             "http://" +
             this.state.ip_server +
             "/dlgtd/controller/checkSubtaskController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                subtask_id: subtask_id
-            })
-        })
+
+        let content = JSON.stringify({
+            subtask_id: subtask_id
+        });
+        
+        fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
                 if (responseJson.error) {
@@ -614,9 +556,7 @@ class ViewGroupTaskScreen extends React.Component {
         });
 
         return this.state.isLoading ? (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <ActivityIndicator size="large" color="tomato" animating />
-            </View>
+            <LoadingScreen/>
         ) : (
                 <ScrollView style={{ backgroundColor: "#ebf0f7" }}>
                     <Modal

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import styles from '../styles/AddDailyTaskStyle';
-import { addUserTask } from '../helpers/FetchData';
+import { fetchData } from '../helpers/FetchData';
 import LoadingScreen from '../helpers/LoadingScreen';
 
 class AddTaskScreen extends Component {
@@ -47,7 +47,6 @@ class AddTaskScreen extends Component {
       isLoading: false,
       due_date: "",
       dateText: "Pick a time",
-
     });
   }
 
@@ -70,8 +69,15 @@ class AddTaskScreen extends Component {
       "http://" +
       this.state.server_ip +
       "/dlgtd/controller/addDailyTaskController.php";
-
-    addUserTask(url, this.state.user_id, task_name, task_description, due_date)
+    
+    let content = JSON.stringify({
+      user_id: this.state.user_id,
+      task_name: task_name,
+      task_description: task_description,
+      time: due_date,
+    });
+    
+    fetchData(url, content)
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.error) {
@@ -86,7 +92,7 @@ class AddTaskScreen extends Component {
 
   render() {
     return this.state.isLoading ? (
-      <LoadingScreen/>
+      <LoadingScreen />
     ) : (
         <ScrollView>
           <View style={styles.container}>

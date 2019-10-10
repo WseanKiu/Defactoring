@@ -6,7 +6,6 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
-  ActivityIndicator,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Icon2 from "react-native-vector-icons/FontAwesome";
@@ -16,7 +15,7 @@ import styles from "../styles/style";
 import styles2 from '../styles/NotificationStyle';
 import formsStyle from "../styles/formsStyle";
 import LoadingScreen from '../helpers/LoadingScreen';
-import { GetNotification } from "../helpers/FetchData";
+import { GetNotification, fetchTest, fetchData } from "../helpers/FetchData";
 
 class NotificationScreen extends React.Component {
   constructor(props) {
@@ -65,7 +64,12 @@ class NotificationScreen extends React.Component {
         "http://" +
         this.state.ip_server +
         "/dlgtd/controller/getUserNotificationController.php";
-      GetNotification(url, this.state.user_code)
+      
+      let content = JSON.stringify({
+        user_code: this.state.user_code
+      });
+
+      fetchData(url, content)
         .then(response => response.json())
         .then(responseJson => {
 
@@ -77,7 +81,7 @@ class NotificationScreen extends React.Component {
             });
           responseJson = null;
         })
-        .catch(error => { });
+        
     }, 1000);
   }
 
@@ -106,14 +110,22 @@ class NotificationScreen extends React.Component {
       this.state.ip_server +
       "/dlgtd/controller/acceptTaskController.php";
 
-      AcceptTask(url, task_id, subtask_id, this.state.user_id, this.state.user_code, notif_id, user_id)
+      let content = JSON.stringify({
+        task_id: task_id,
+        subtask_id: subtask_id,
+        user_id: this.state.user_id,
+        user_code: this.state.user_code,
+        notif_id: notif_id,
+        notif_to: user_id
+      });
+
+      fetchData(url, content)
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.error) {
           alert(responseJson.response);
         }
       })
-      .catch(error => { });
   }
 
   declineTask(task_id, subtask_id, notif_id, user_id) {
@@ -128,34 +140,31 @@ class NotificationScreen extends React.Component {
     this.toggleModal();
   }
 
+
   declineTaskConfirmed() {
     const url =
       "http://" +
       this.state.ip_server +
       "/dlgtd/controller/declineTaskController.php";
-    fetch(url, {
-      method: "post",
-      header: {
-        Accept: "application/json",
-        "Content-type": "applicantion/json"
-      },
-      body: JSON.stringify({
-        task_id: this.state.task_id,
-        subtask_id: this.state.subtask_id,
-        user_id: this.state.user_id,
-        user_code: this.state.user_code,
-        notif_id: this.state.notif_id,
-        notif_to: this.state.notif_to,
-        reason: this.state.reason
-      })
-    })
+      
+    let content = JSON.stringify({
+      task_id: this.state.task_id,
+      subtask_id: this.state.subtask_id,
+      user_id: this.state.user_id,
+      user_code: this.state.user_code,
+      notif_id: this.state.notif_id,
+      notif_to: this.state.notif_to,
+      reason: this.state.reason
+    });
+    
+    fetchTest(url, content)
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.error) {
           alert(responseJson.response);
         }
       })
-      .catch(error => { });
+
     this.toggleModal();
   }
 

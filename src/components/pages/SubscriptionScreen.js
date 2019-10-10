@@ -11,6 +11,7 @@ import {
     AsyncStorage,
     TouchableOpacity
 } from "react-native";
+import { fetchData } from "../helpers/FetchData";
 
 class SubscriptionScreen extends Component {
     constructor(props) {
@@ -57,15 +58,10 @@ class SubscriptionScreen extends Component {
             "http://" +
             this.state.server_ip +
             "/dlgtd/controller/getPaymentTypeController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-            })
-        })
+        
+        let content = JSON.stringify({});
+
+        fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
                 this.setState({
@@ -92,17 +88,13 @@ class SubscriptionScreen extends Component {
             "http://" +
             this.state.server_ip +
             "/dlgtd/controller/addPaymentController.php";
-        fetch(url, {
-            method: "post",
-            header: {
-                Accept: "application/json",
-                "Content-type": "applicantion/json"
-            },
-            body: JSON.stringify({
-                id: this.state.payment_id,
-                user_id: this.state.user_id
-            })
-        })
+        
+        let content = JSON.stringify({
+            id: this.state.payment_id,
+            user_id: this.state.user_id
+        });
+
+        fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
             })
@@ -110,7 +102,6 @@ class SubscriptionScreen extends Component {
             });
 
             this.props.navigation.navigate('ThankYou');
-
     }
 
 
@@ -188,6 +179,5 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
-        // padding: 30
     }
 });

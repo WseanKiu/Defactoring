@@ -5,13 +5,12 @@ import {
     TouchableOpacity,
     AsyncStorage,
     FlatList,
-    ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DlgtdLogo from '../../assets/logo/DlgtdLogo';
 import styles from '../styles/style';
 import LoadingScreen from '../helpers/LoadingScreen';
-import { getTasks } from '../helpers/FetchData';
+import { getTasks, fetchData } from '../helpers/FetchData';
 
 class ArchiveScreen extends Component {
     constructor(props) {
@@ -50,7 +49,12 @@ class ArchiveScreen extends Component {
             "http://" +
             this.state.ip_server +
             "/dlgtd/controller/getArchiveTaskController.php";
-        getTasks(url, this.state.user_id)
+
+        let content = JSON.stringify({
+            user_id: user_id
+        });
+
+        fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
                 this.setState({
@@ -70,7 +74,11 @@ class ArchiveScreen extends Component {
                 "http://" +
                 this.state.ip_server +
                 "/dlgtd/controller/getArchiveTaskController.php";
-            getTasks(url, this.state.user_id)
+            
+            let content = JSON.stringify({
+                user_id: user_id
+            });
+            fetchData(url, content)
                 .then(response => response.json())
                 .then(responseJson => {
                     this.setState({
@@ -143,7 +151,7 @@ class ArchiveScreen extends Component {
 
     render() {
         return this.state.isLoading ? (
-            <LoadingScreen/>
+            <LoadingScreen />
         ) : (
                 <View style={styles.container}>
                     <FlatList

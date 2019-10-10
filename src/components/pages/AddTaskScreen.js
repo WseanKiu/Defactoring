@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import styles from '../styles/AddTaskStyle';
-import { AddTask } from '../helpers/FetchData';
+import { fetchData } from '../helpers/FetchData';
 
 class AddTaskScreen extends Component {
   constructor(props) {
@@ -68,7 +68,15 @@ class AddTaskScreen extends Component {
       this.state.server_ip +
       "/dlgtd/controller/addTaskController.php";
 
-      AddTask(url, this.state.user_id, task_name, task_description, due_date, 'solo')
+    let content = JSON.stringify({
+      user_id: this.state.user_id,
+      task_name: task_name,
+      task_description: task_description,
+      task_dueDate: due_date,
+      task_type: 'solo'
+    });
+
+    fetchData(url, content)
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.error === false) {

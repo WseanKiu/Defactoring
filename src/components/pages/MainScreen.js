@@ -13,7 +13,7 @@ import DlgtdLogo from "../../assets/logo/DlgtdLogo";
 import FloatingAddButton from "../helpers/FloatingAddButton";
 import LoadingScreen from '../helpers/LoadingScreen';
 import Bar from "react-native-progress/Bar";
-import { getTasks } from '../helpers/FetchData';
+import { getTasks, fetchData } from '../helpers/FetchData';
 
 class MainScreen extends React.Component {
   constructor(props) {
@@ -64,7 +64,12 @@ class MainScreen extends React.Component {
         "http://" +
         this.state.ip_server +
         "/dlgtd/controller/getUserTaskController.php";
-      getTasks(url, this.state.user_id)
+
+      let content = JSON.stringify({
+        user_id: this.state.user_id
+      });
+      
+      fetchData(url, content)
         .then(response => response.json())
         .then(responseJson => {
           this.setState({

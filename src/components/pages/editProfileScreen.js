@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import styles from '../styles/EditProfileStyle';
 import DatePicker from "react-native-datepicker";
-import { getTasks, updateUserInfo } from '../helpers/FetchData';
+import { getTasks, updateUserInfo, fetchData } from '../helpers/FetchData';
 
 class SubscriptionScreen extends Component {
     constructor(props) {
@@ -60,10 +60,15 @@ class SubscriptionScreen extends Component {
             user_id: user_id,
             user_code: user_code
         });
+
         const url =
             "http://" + this.state.ip_server + "/dlgtd/controller/getUserInfoController.php";
-        
-        getTasks(url, this.state.user_id)
+
+        let content = JSON.stringify({
+            user_id: user_id
+        });
+
+        fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
                 this.setState({
@@ -106,7 +111,18 @@ class SubscriptionScreen extends Component {
         const { contact } = this.state;
         const { birthdate } = this.state;
 
-        updateUserInfo(url, this.state.user_id, f_name, l_name, email, contact, birthdate)
+        const url = 'http://' + this.state.ip_server + '/dlgtd/controller/updateUserInfoController.php';
+
+        let content = JSON.stringify({
+            user_id: this.state.user_id,
+            fname: f_name,
+            lname: l_name,
+            email: email,
+            contact: contact,
+            birthdate: birthdate
+        });
+        
+        fetchData(url, content)
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.error) {

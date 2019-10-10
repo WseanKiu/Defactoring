@@ -9,7 +9,7 @@ import {
     TouchableOpacity
 } from "react-native";
 import styles from '../styles/ChangePassStyle';
-import { ChangePass } from "../helpers/FetchData";
+import { ChangePass, fetchData } from "../helpers/FetchData";
 
 class ChangePassScreen extends Component {
     constructor(props) {
@@ -73,7 +73,13 @@ class ChangePassScreen extends Component {
     updateUser = () => {
         const url =
         "http://" + this.state.ip_server + "/dlgtd/controller/changePasswordController.php";
-        ChangePass(url, this.state.user_id, this.state.password2)
+        
+        let content = JSON.stringify({
+            user_id: this.state.user_id,
+            new_pass: this.state.password2
+        });
+        
+        fetchData(url, content)
         .then(response => response.json())
         .then(responseJson => {
             if(responseJson.error) {

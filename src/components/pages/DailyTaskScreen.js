@@ -13,7 +13,7 @@ import styles from '../styles/style';
 import LoadingScreen from '../helpers/LoadingScreen';
 import moment from 'moment';
 import AddDailyTaskButton from '../helpers/AddDailyTaskButton';
-import { getTasks, checkDaily } from '../helpers/FetchData';
+import { fetchData } from '../helpers/FetchData';
 
 class DailyTaskScreen extends Component {
     constructor(props) {
@@ -48,12 +48,16 @@ class DailyTaskScreen extends Component {
             user_id: user_id
         });
 
+        let content = JSON.stringify({
+            user_id: this.state.user_id
+        });
+
         const url =
             "http://" +
             this.state.ip_server +
             "/dlgtd/controller/getDailyTaskController.php";
 
-        getTasks(url, this.state.user_id)
+        fetchData(url, content)
             .then(response => response.json())
             .then(responseJson => {
                 this.setState({
@@ -61,20 +65,21 @@ class DailyTaskScreen extends Component {
                     isLoading: false
                 });
             })
-            .catch(error => { });
 
         this.handleResponse();
     };
 
     handleResponse = () => {
+        let content = JSON.stringify({
+            user_id: this.state.user_id
+        });
+        const url =
+            "http://" +
+            this.state.ip_server +
+            "/dlgtd/controller/getDailyTaskController.php";
+
         this.timer = setInterval(() => {
-
-            const url =
-                "http://" +
-                this.state.ip_server +
-                "/dlgtd/controller/getDailyTaskController.php";
-
-            getTasks(url, this.state.user_id)
+            fetchData(url, content)
                 .then(response => response.json())
                 .then(responseJson => {
                     this.setState({
@@ -82,23 +87,19 @@ class DailyTaskScreen extends Component {
                         isLoading: false
                     });
                 })
-                .catch(error => { });
 
         }, 1000);
     }
 
     checkDailyTask = (id) => {
-
         const url =
             "http://" +
             this.state.ip_server +
             "/dlgtd/controller/checkDailyTaskController.php";
-        checkDaily(url, id)
-            .then(response => response.json())
-            .then(responseJson => {
+        
+            let content = JSON.stringify({id: id});
 
-            })
-            .catch(error => { });
+        fetchData(url, content)
     }
 
 
