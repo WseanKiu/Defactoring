@@ -171,7 +171,7 @@ class MainScreen extends React.Component {
     return this.state.isLoading ? (
       <LoadingScreen />
     ) : (
-        <View style={styles.container}>
+        <View style={[styles.container, {}]}>
           <FloatingAddButton navigation={this.props.navigation} />
           <FlatList
             data={this.state.taskContainer}

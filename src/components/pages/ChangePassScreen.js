@@ -1,15 +1,14 @@
 import React, { Component } from "react";
 import {
     View,
-    Text,
     Alert,
-    TextInput,
     ScrollView,
     AsyncStorage,
-    TouchableOpacity
 } from "react-native";
 import styles from '../styles/ChangePassStyle';
-import { ChangePass, fetchData } from "../helpers/FetchData";
+import { fetchData } from "../helpers/FetchData";
+import TxtInputStyle3 from "../helpers/TxtInputStyle3";
+import BtnStyle3 from "../helpers/BtnStyle3";
 
 class ChangePassScreen extends Component {
     constructor(props) {
@@ -41,7 +40,7 @@ class ChangePassScreen extends Component {
 
     checkInputs = () => {
 
-        if(this.state.password.length < 4) {
+        if (this.state.password.length < 4) {
             Alert.alert(
                 'Oops!',
                 'Password must be atleast 4 characters.',
@@ -51,10 +50,10 @@ class ChangePassScreen extends Component {
                 { cancelable: false },
             );
 
-            return ;
+            return;
         }
 
-        if(this.state.password != this.state.password2) {
+        if (this.state.password != this.state.password2) {
             Alert.alert(
                 'Oops!',
                 'Password does not match, please try again.',
@@ -64,7 +63,7 @@ class ChangePassScreen extends Component {
                 { cancelable: false },
             );
 
-            return ;
+            return;
         }
 
         this.updateUser();
@@ -72,59 +71,54 @@ class ChangePassScreen extends Component {
 
     updateUser = () => {
         const url =
-        "http://" + this.state.ip_server + "/dlgtd/controller/changePasswordController.php";
-        
+            "http://" + this.state.ip_server + "/dlgtd/controller/changePasswordController.php";
+
         let content = JSON.stringify({
             user_id: this.state.user_id,
             new_pass: this.state.password2
         });
-        
+
         fetchData(url, content)
-        .then(response => response.json())
-        .then(responseJson => {
-            if(responseJson.error) {
-                Alert.alert(
-                    'Please try again',
-                    'Something went wrong, please try again.',
-                    [
-                        { text: 'Okay' },
-                    ],
-                    { cancelable: false },
-                );
-            } else {
-                this.props.navigation.navigate("Profile");
-            }
-        })
-        .catch(error => {
-            alert(error + url);
-        });
+            .then(response => response.json())
+            .then(responseJson => {
+                if (responseJson.error) {
+                    Alert.alert(
+                        'Please try again',
+                        'Something went wrong, please try again.',
+                        [
+                            { text: 'Okay' },
+                        ],
+                        { cancelable: false },
+                    );
+                } else {
+                    this.props.navigation.navigate("Profile");
+                }
+            })
+            .catch(error => {
+                alert(error + url);
+            });
     }
 
     render() {
         return (
             <ScrollView>
                 <View style={styles.container}>
-                    <View style={styles.inputContainer}>
-                        <Text>New password: </Text>
-                        <TextInput style={styles.inputs}
-                        placeholder="Enter here"
-                        secureTextEntry={true}
-                        underlineColorAndroid='transparent'
-                        onChangeText={(password) => this.setState({ password })} />
-                    </View>
+                    <TxtInputStyle3
+                        title={"New password: "}
+                        placeholder={"Enter password"}
+                        hideText={true}
+                        updateVal={(val) => this.setState({ password: val })} />
+                    
+                    <TxtInputStyle3
+                        title={"Confirm password: "}
+                        placeholder={"Retype password"}
+                        hideText={true}
+                        updateVal={(val) => this.setState({ password2: val })} />
 
-                    <View style={styles.inputContainer}>
-                        <Text>Confirm password: </Text>
-                        <TextInput style={styles.inputs}
-                        placeholder="retype password"
-                        secureTextEntry={true}
-                        underlineColorAndroid='transparent'
-                        onChangeText={(password2) => this.setState({ password2 })} />
-                    </View>
-
-                    <TouchableOpacity style={[styles.buttonContainer, styles.sendButton]} onPress={this.checkInputs}>
-                        <Text style={styles.buttonText}>Save</Text>
-                    </TouchableOpacity>
+                    <BtnStyle3
+                        text={"Save"}
+                        btnPress={this.checkInputs}
+                         />
                 </View>
             </ScrollView>
         );

@@ -6,7 +6,6 @@ import {
   AsyncStorage,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator,
   TextInput,
 } from "react-native";
 import DatePicker from "react-native-datepicker";
@@ -389,13 +388,9 @@ class ViewSubtaskScreen extends React.Component {
           alert(responseJson.response);
         }
       })
-      .catch(error => {
-      });
   }
 
   render() {
-    const { navigation } = this.props;
-
     let SubTasks = this.state.subTaskArray.map((val, key) => {
       return <SubTask key={key} keyval={key} val={val}
         checkSubtask={() => this.checkSubTask(val.subtask_id)}

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-  ActivityIndicator,
   View,
   Text,
   ScrollView,
@@ -11,7 +10,9 @@ import {
 import DatePicker from "react-native-datepicker";
 import styles from '../styles/AddGroupTaskStyle';
 import { fetchData } from "../helpers/FetchData";
-
+import LoadingScreen from "../helpers/LoadingScreen";
+import TxtInputStyle2 from "../helpers/TxtInputStyle2";
+import BtnStyle2 from "../helpers/BtnStyle2";
 class AddGrouptaskScreen extends Component {
   constructor(props) {
     super(props);
@@ -97,30 +98,23 @@ class AddGrouptaskScreen extends Component {
 
   render() {
     return this.state.isLoading ? (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="#000000" animating />
-      </View>
+      <LoadingScreen/>
     ) : (
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.formContainer}>
-              <Text style={styles.textLabel}>Project title*</Text>
-              <TextInput
-                style={styles.textInput}
+              <TxtInputStyle2
+                title={"Project title ni"}
                 placeholder="Title"
-                onChangeText={task_name => this.setState({ task_name })}
-              />
+                parent={true}
+                updateVal={(val) => this.setState({ task_name: val})} />
+              <TxtInputStyle2
+                title={"Description"}
+                placeholder={"Description"}
+                parent={false}
+                updateVal={(val) => this.setState({ task_description: val})} />
 
-              <Text style={styles.textLabel}>Description</Text>
-              <TextInput
-                style={styles.textInputChildren}
-                placeholder="Description"
-                onChangeText={task_description =>
-                  this.setState({ task_description })
-                }
-              />
               <Text style={styles.textLabel}>Due date</Text>
-
               <DatePicker
                 style={{ width: 200 }}
                 date={this.state.due_date}
@@ -147,12 +141,11 @@ class AddGrouptaskScreen extends Component {
                 }}
               />
             </View>
-            <TouchableOpacity
-              style={styles.saveButton}
-              onPress={this.checkInputs}
-            >
-              <Text style={styles.saveButtonText}>Save</Text>
-            </TouchableOpacity>
+
+            <BtnStyle2
+              text={"Save"}
+              btnPress={this.checkInputs} />
+              
           </View>
         </ScrollView>
       );

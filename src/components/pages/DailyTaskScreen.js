@@ -130,7 +130,6 @@ class DailyTaskScreen extends Component {
     };
 
     renderItem = ({ item }) => {
-        const task_id = item.task_id;
 
         let date = moment()
             .utcOffset(item.wut_time)

@@ -1,5 +1,6 @@
 import React from "react";
-import { ActivityIndicator, AsyncStorage, StatusBar, View } from "react-native";
+import {AsyncStorage} from "react-native";
+import LoadingScreen from '../helpers/LoadingScreen';
 
 export default class AuthLoadingScreen extends React.Component {
   constructor() {
@@ -18,10 +19,7 @@ export default class AuthLoadingScreen extends React.Component {
   // Render any loading content that you like here
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="tomato" />
-        <StatusBar barStyle="default" />
-      </View>
+      <LoadingScreen/>
     );
   }
 }

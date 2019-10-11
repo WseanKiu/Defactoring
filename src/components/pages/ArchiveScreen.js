@@ -76,8 +76,9 @@ class ArchiveScreen extends Component {
                 "/dlgtd/controller/getArchiveTaskController.php";
             
             let content = JSON.stringify({
-                user_id: user_id
+                user_id: this.state.user_id
             });
+            
             fetchData(url, content)
                 .then(response => response.json())
                 .then(responseJson => {

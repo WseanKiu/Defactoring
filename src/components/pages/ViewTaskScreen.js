@@ -421,8 +421,6 @@ class ViewTaskScreen extends React.Component {
   }
 
   render() {
-    const { navigation } = this.props;
-
     let SubTasks = this.state.subTaskArray.map((val, key) => {
       return <SubTask key={key} keyval={key} val={val}
         checkSubtask={() => this.checkSubTask(val.subtask_id)}
@@ -451,7 +449,7 @@ class ViewTaskScreen extends React.Component {
                 <TextInput
                   autoFocus
                   onChangeText={(subTaskName) => this.setState({ subTaskName })}
-                  value={this.state.subTaskName}
+                   value={this.state.subTaskName}
                   style={formsStyle.md_textInput_header}
                   placeholder="Subtask name" />
                 <TextInput

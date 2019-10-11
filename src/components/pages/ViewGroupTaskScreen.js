@@ -6,7 +6,6 @@ import {
     AsyncStorage,
     ScrollView,
     TouchableOpacity,
-    ActivityIndicator,
     TextInput,
 } from "react-native";
 import DatePicker from "react-native-datepicker";
@@ -148,7 +147,7 @@ class ViewGroupTaskScreen extends React.Component {
     componentWillUnmount() {
         clearInterval(this.timer);
 
-        var values = this.state.task_name === this.state.var_taskName ?
+        let values = this.state.task_name === this.state.var_taskName ?
             '' : "task_name = '" + this.state.task_name + "'";
         values += this.state.task_desc === this.state.var_taskDesc ?
             '' : (values !== '' ? ', ' : "") + "task_description = '" + this.state.task_desc + "'";

@@ -15,6 +15,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import DatePicker from "react-native-datepicker";
 import styles from '../styles/RegisterStyle';
 import { fetchData } from '../helpers/FetchData';
+import TxtInputStyle4 from '../helpers/TxtInputStyle4';
+import BtnStyle3 from '../helpers/BtnStyle3';
 
 export default class RegisterScreen extends React.Component {
     constructor(props) {
@@ -58,13 +60,13 @@ export default class RegisterScreen extends React.Component {
     };
 
     checkInputs = () => {
-        if(this.state.fname.trim().length>0 &&
-        this.state.lname.trim().length>0 &&
-        this.state.username.trim().length>0 &&
-        this.state.password.trim().length>0 &&
-        this.state.email.trim().length>0 &&
-        this.state.contact.trim().length>0 &&
-        this.state.birthdate.trim().length>0) {
+        if (this.state.fname.trim().length > 0 &&
+            this.state.lname.trim().length > 0 &&
+            this.state.username.trim().length > 0 &&
+            this.state.password.trim().length > 0 &&
+            this.state.email.trim().length > 0 &&
+            this.state.contact.trim().length > 0 &&
+            this.state.birthdate.trim().length > 0) {
             this.Register();
         } else {
             Alert.alert(
@@ -127,86 +129,72 @@ export default class RegisterScreen extends React.Component {
     render() {
         return (
             <ScrollView>
-            <View style={[styles.container, { marginTop: 50}]}>
+                <View style={[styles.container]}>
 
-                <Image style={styles.logo} source={require('../../assets/logo/dlgtd_logo1.png')} />
+                    <Image style={styles.logo} source={require('../../assets/logo/dlgtd_logo1.png')} />
 
-                <View style={styles.inputContainer}>
-                    <TextInput style={styles.inputs}
-                        placeholder="Firstname"
-                        keyboardType="email-address"
-                        underlineColorAndroid='transparent'
-                        onChangeText={(fname) => this.setState({ fname })} />
-                    <TextInput style={styles.inputs}
-                        placeholder="Lastname"
-                        keyboardType="email-address"
-                        underlineColorAndroid='transparent'
-                        onChangeText={(lname) => this.setState({ lname })} />
-                </View>
+                    <TxtInputStyle4
+                        placeholder={"Firstname"}
+                        hideText={false}
+                        updateVal={(val) => this.setState({ fname: val })} />
 
-                <View style={styles.inputContainer}>
-                    <TextInput style={styles.inputs}
-                        placeholder="Username"
-                        keyboardType="email-address"
-                        underlineColorAndroid='transparent'
-                        onChangeText={(username) => this.setState({ username })} />
-                </View>
-                <View style={styles.inputContainer}>
-                    <TextInput style={styles.inputs}
-                        placeholder="Password"
-                        secureTextEntry={true}
-                        underlineColorAndroid='transparent'
-                        onChangeText={(password) => this.setState({ password })} />
-                </View>
+                    <TxtInputStyle4
+                        placeholder={"Lastname"}
+                        hideText={false}
+                        updateVal={(val) => this.setState({ lname: val })} />
 
-                <View style={styles.inputContainer}>
-                    <TextInput style={styles.inputs}
-                        placeholder="Email"
-                        keyboardType="email-address"
-                        underlineColorAndroid='transparent'
-                        onChangeText={(email) => this.setState({ email })} />
-                </View>
+                    <TxtInputStyle4
+                        placeholder={"Username"}
+                        hideText={false}
+                        updateVal={(val) => this.setState({ username: val })} />
+                        
+                    <TxtInputStyle4
+                        placeholder={"Password"}
+                        hideText={true}
+                        updateVal={(val) => this.setState({ password: val })} />
+                        
+                    <TxtInputStyle4
+                        placeholder={"Email"}
+                        hideText={false}
+                        updateVal={(val) => this.setState({ email: val })} />
+                        
+                    <TxtInputStyle4
+                        placeholder={"Phone number"}
+                        hideText={false}
+                        updateVal={(val) => this.setState({ contact: val })} />
 
-                <View style={styles.inputContainer}>
-                    <TextInput style={styles.inputs}
-                        placeholder="Contact number"
-                        keyboardType="email-address"
-                        underlineColorAndroid='transparent'
-                        onChangeText={(contact) => this.setState({ contact })} />
-                </View>
+                    <View style={[styles.inputContainer,]}>
+                        <DatePicker
+                            style={{ width: 230, }}
+                            date={this.state.birthdate}
+                            mode="date"
+                            placeholder="Birthdate"
+                            format="YYYY-MM-DD"
+                            androidMode="spinner"
+                            showIcon={false}
+                            maxDate={this.state.present_date}
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                                dateInput: {
+                                    marginLeft: 18,
+                                    borderColor: '#fff'
+                                }
+                            }}
+                            onDateChange={(date) => { this.setState({ birthdate: date }) }}
+                        />
+                    </View>
 
-                <View style={[styles.inputContainer,]}>
-                    <DatePicker
-                        style={{ width: 230, }}
-                        date={this.state.birthdate}
-                        mode="date"
-                        placeholder="Birthdate"
-                        format="YYYY-MM-DD"
-                        androidMode="spinner"
-                        showIcon={false}
-                        maxDate={this.state.present_date}
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
-                        customStyles={{
-                          dateInput: {
-                            marginLeft: 18,
-                            borderColor: '#fff'
-                          }
-                        }}
-                        onDateChange={(date) => { this.setState({ birthdate: date }) }}
+                    <BtnStyle3
+                        text={"Register"}
+                        btnPress={this.checkInputs}
                     />
+
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={{ fontSize: 12, alignItems: 'center', flexDirection: 'row' }}>
+                        <Icon name="ios-arrow-back" size={18} color="#e74c3c" />
+                        <Text style={{ padding: 8 }}>Back</Text>
+                    </TouchableOpacity>
                 </View>
-
-                <TouchableHighlight style={[styles.buttonContainer, styles.sendButton]} onPress={this.checkInputs}>
-                    <Text style={styles.buttonText}>Register</Text>
-                </TouchableHighlight>
-
-
-                <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={{ fontSize: 12, alignItems: 'center', flexDirection: 'row' }}>
-                    <Icon name="ios-arrow-back" size={18} color="#e74c3c" />
-                    <Text style={{ padding: 8 }}>Back</Text>
-                </TouchableOpacity>
-            </View>
             </ScrollView>
         );
     }

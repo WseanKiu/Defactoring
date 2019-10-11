@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-    ActivityIndicator,
     View,
     Text,
     Modal,
@@ -12,6 +11,7 @@ import {
     TouchableOpacity
 } from "react-native";
 import { fetchData } from "../helpers/FetchData";
+import LoadingScreen from "../helpers/LoadingScreen";
 
 class SubscriptionScreen extends Component {
     constructor(props) {
@@ -20,7 +20,6 @@ class SubscriptionScreen extends Component {
             server_ip: "",
             user_id: "",
             isLoading: true,
-            present_date: "",
             showModal: false,
             status: "Pending",
             payments: [],
@@ -34,21 +33,6 @@ class SubscriptionScreen extends Component {
         title: "Subscription type(s)"
     };
 
-    componentDidMount() {
-        var day = new Date();
-        var temp =
-            day.getFullYear() +
-            "-" +
-            (day.getMonth() + 1) +
-            "-" +
-            day.getDate() +
-            " " +
-            day.getHours() +
-            ":" +
-            day.getMinutes();
-        this.setState({ present_date: temp });
-    }
-
     _getAsyncData = async () => {
         const server_ip = await AsyncStorage.getItem("server_ip");
         const user_id = await AsyncStorage.getItem("user_id");
@@ -58,7 +42,7 @@ class SubscriptionScreen extends Component {
             "http://" +
             this.state.server_ip +
             "/dlgtd/controller/getPaymentTypeController.php";
-        
+
         let content = JSON.stringify({});
 
         fetchData(url, content)
@@ -83,12 +67,12 @@ class SubscriptionScreen extends Component {
         }
     };
 
-    addPayment = () =>  {
+    addPayment = () => {
         const url =
             "http://" +
             this.state.server_ip +
             "/dlgtd/controller/addPaymentController.php";
-        
+
         let content = JSON.stringify({
             id: this.state.payment_id,
             user_id: this.state.user_id
@@ -101,14 +85,13 @@ class SubscriptionScreen extends Component {
             .catch(error => {
             });
 
-            this.props.navigation.navigate('ThankYou');
+        this.props.navigation.navigate('ThankYou');
     }
-
 
     renderItem = ({ item }) => {
         return (
             <TouchableOpacity
-                onPress={() => { 
+                onPress={() => {
                     this.setState({
                         price: item.subscription_price,
                         showModal: true,
@@ -134,7 +117,6 @@ class SubscriptionScreen extends Component {
         );
     };
 
-
     renderSeparator = () => {
         return (
             <View style={{ height: 1, backgroundColor: '#95a5a6' }} />
@@ -143,24 +125,22 @@ class SubscriptionScreen extends Component {
 
     render() {
         return this.state.isLoading ? (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <ActivityIndicator size="large" color="#000000" animating />
-            </View>
+            <LoadingScreen />
         ) : (
                 <ScrollView>
                     <View style={styles.container}>
-                            <Modal
-                                visible={this.state.showModal}
-                                onRequestClose={() => this.setState({ showModal: false })}
-                            >
-                                <WebView
-                                    source={{ uri: "http://" + this.state.server_ip + "/dlgtd/controller/paypalForm.html" }}
-                                    onNavigationStateChange={data =>
-                                        this.handleResponse(data)
-                                    }
-                                    injectedJavaScript={`document.getElementById('price').value="`+this.state.price+`";document.f1.submit()`}
-                                />
-                            </Modal>
+                        <Modal
+                            visible={this.state.showModal}
+                            onRequestClose={() => this.setState({ showModal: false })}
+                        >
+                            <WebView
+                                source={{ uri: "http://" + this.state.server_ip + "/dlgtd/controller/paypalForm.html" }}
+                                onNavigationStateChange={data =>
+                                    this.handleResponse(data)
+                                }
+                                injectedJavaScript={`document.getElementById('price').value="` + this.state.price + `";document.f1.submit()`}
+                            />
+                        </Modal>
                         <FlatList
                             data={this.state.payments}
                             renderItem={this.renderItem}

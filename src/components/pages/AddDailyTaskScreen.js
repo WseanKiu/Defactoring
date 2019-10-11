@@ -4,13 +4,13 @@ import {
   Text,
   ScrollView,
   AsyncStorage,
-  TouchableOpacity,
-  TextInput
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import styles from '../styles/AddDailyTaskStyle';
 import { fetchData } from '../helpers/FetchData';
 import LoadingScreen from '../helpers/LoadingScreen';
+import TxtInputStyle2 from "../helpers/TxtInputStyle2";
+import BtnStyle2 from "../helpers/BtnStyle2";
 
 class AddTaskScreen extends Component {
   constructor(props) {
@@ -97,23 +97,20 @@ class AddTaskScreen extends Component {
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.formContainer}>
-              <Text style={styles.textLabel}>Task name*</Text>
-              <TextInput
-                style={styles.textInput}
-                placeholder="Title"
-                onChangeText={task_name => this.setState({ task_name })}
-              />
+              <TxtInputStyle2
+                title={"Task name*"}
+                placeholder={"Title"}
+                parent={true}
+                updateVal={(val) => this.setState({ task_name: val })} />
+                
+              <TxtInputStyle2
+                title={"Description"}
+                placeholder={"Description"}
+                parent={false}
+                style={this.props.textInputChildren}
+                updateVal={(val) => this.setState({ task_description: val })} />
 
-              <Text style={styles.textLabel}>Description</Text>
-              <TextInput
-                style={styles.textInputChildren}
-                placeholder="Description"
-                onChangeText={task_description =>
-                  this.setState({ task_description })
-                }
-              />
               <Text style={styles.textLabel}>Add time</Text>
-
               <DatePicker
                 style={{ width: 200 }}
                 mode="time"
@@ -140,12 +137,11 @@ class AddTaskScreen extends Component {
                 }}
               />
             </View>
-            <TouchableOpacity
-              style={styles.saveButton}
-              onPress={this.checkInputs}
-            >
-              <Text style={styles.saveButtonText}>Save</Text>
-            </TouchableOpacity>
+
+            <BtnStyle2
+              text={"Save"}
+              btnPress={this.checkInputs} />
+
           </View>
         </ScrollView>
       );

@@ -10,6 +10,8 @@ import {
 import styles from '../styles/EditProfileStyle';
 import DatePicker from "react-native-datepicker";
 import { getTasks, updateUserInfo, fetchData } from '../helpers/FetchData';
+import TxtInputStyle3 from "../helpers/TxtInputStyle3";
+import BtnStyle3 from "../helpers/BtnStyle3";
 
 class SubscriptionScreen extends Component {
     constructor(props) {
@@ -121,7 +123,7 @@ class SubscriptionScreen extends Component {
             contact: contact,
             birthdate: birthdate
         });
-        
+
         fetchData(url, content)
             .then((response) => response.json())
             .then((responseJson) => {
@@ -141,44 +143,30 @@ class SubscriptionScreen extends Component {
         return (
             <ScrollView>
                 <View style={styles.container}>
-                    <View style={styles.inputContainer}>
-                        <Text>Firstname: </Text>
-                        <TextInput style={styles.inputs}
-                            placeholder="Firstname"
-                            value={this.state.f_name}
-                            keyboardType="email-address"
-                            underlineColorAndroid='transparent'
-                            onChangeText={(f_name) => this.setState({ f_name })} />
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <Text>Lastname: </Text>
-                        <TextInput style={styles.inputs}
-                            placeholder="Lastname"
-                            value={this.state.l_name}
-                            keyboardType="email-address"
-                            underlineColorAndroid='transparent'
-                            onChangeText={(l_name) => this.setState({ l_name })} />
-                    </View>
+                    <TxtInputStyle3
+                        title={"Firstname: "}
+                        placeholder={"Firstname"}
+                        hideText={false}
+                        updateVal={(val) => this.setState({ f_name: val })} />
 
-                    <View style={styles.inputContainer}>
-                        <Text>Email: </Text>
-                        <TextInput style={styles.inputs}
-                            placeholder="Email"
-                            value={this.state.email}
-                            keyboardType="email-address"
-                            underlineColorAndroid='transparent'
-                            onChangeText={(email) => this.setState({ email })} />
-                    </View>
+                    <TxtInputStyle3
+                        title={"Lastname: "}
+                        placeholder={"Lastname"}
+                        hideText={false}
+                        updateVal={(val) => this.setState({ l_name: val })} />
 
-                    <View style={styles.inputContainer}>
-                        <Text>Contact#: </Text>
-                        <TextInput style={styles.inputs}
-                            placeholder="Contact number"
-                            value={this.state.contact}
-                            keyboardType="email-address"
-                            underlineColorAndroid='transparent'
-                            onChangeText={(contact) => this.setState({ contact })} />
-                    </View>
+                    <TxtInputStyle3
+                        title={"Email: "}
+                        placeholder={"Email"}
+                        hideText={false}
+                        updateVal={(val) => this.setState({ email: val })} />
+
+                    <TxtInputStyle3
+                        title={"Contact#: "}
+                        placeholder={"Contact number"}
+                        hideText={false}
+                        updateVal={(val) => this.setState({ contact: val })} />
+
 
                     <View style={[styles.inputContainer,]}>
                         <Text>Birthdate: </Text>
@@ -203,9 +191,9 @@ class SubscriptionScreen extends Component {
                         />
                     </View>
 
-                    <TouchableOpacity style={[styles.buttonContainer, styles.sendButton]} onPress={this.checkInputs}>
-                        <Text style={styles.buttonText}>Save</Text>
-                    </TouchableOpacity>
+                    <BtnStyle3
+                        text={"Save"}
+                        btnPress={this.checkInputs} />
                 </View>
             </ScrollView>
         );

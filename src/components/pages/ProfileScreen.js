@@ -16,7 +16,8 @@ import styles from '../styles/ProfileStyle';
 import styles2 from "../styles/style";
 import formsStyle from '../styles/formsStyle';
 import { Avatar } from "react-native-elements";
-import { getTasks, FeedBack, fetchUsingUserID, fetchData, fetchTest } from '../helpers/FetchData';
+import { fetchData } from '../helpers/FetchData';
+import BtnStyle4 from '../helpers/BtnStyle4';
 
 export default class ProfileScreen extends Component {
     constructor(props) {
@@ -232,27 +233,26 @@ export default class ProfileScreen extends Component {
                             <Text style={styles.description}>Contact number: {this.state.user_contacts}</Text>
                             <Text style={styles.description}>Birthdate: {this.state.user_bdate}</Text>
 
-                            <TouchableOpacity style={styles.buttonContainer}
-                                onPress={() => this.props.navigation.navigate('EditProfile')}>
-                                <Text>Edit profile</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.buttonContainer}
-                                onPress={() => this.props.navigation.navigate('ChangePassword')}>
-                                <Text>Chance password</Text>
-                            </TouchableOpacity>
+                            <BtnStyle4
+                                text={"Edit profile"}
+                                btnPress={() => this.props.navigation.navigate('EditProfile')}
+                            />
+                            <BtnStyle4
+                                text={"Chance password"}
+                                btnPress={() => this.props.navigation.navigate('ChangePassword')}
+                            />
                             {
                                 !this.state.user_premium ?
-                                    <TouchableOpacity style={styles.buttonContainer}
-                                        onPress={() => this.props.navigation.navigate('Subscription')}>
-                                        <Text>Subscribe to premium!</Text>
-                                    </TouchableOpacity>
+                                    <BtnStyle4
+                                        text={"Subscribe to premium!"}
+                                        btnPress={() => this.props.navigation.navigate('Subscription')}
+                                    />
                                     : null
                             }
-
-                            <TouchableOpacity style={styles.buttonContainer}
-                                onPress={() => this.setState({ showFeedback: true })}>
-                                <Text>Create feedback</Text>
-                            </TouchableOpacity>
+                            <BtnStyle4
+                                text={"Create feedback"}
+                                btnPress={() => this.setState({ showFeedback: true })}
+                            />
                         </View>
                     </View>
                 </View>

@@ -3,7 +3,6 @@ import {
   ActivityIndicator,
   View,
   Text,
-  StyleSheet,
   ScrollView,
   AsyncStorage,
   TouchableOpacity,
@@ -12,6 +11,9 @@ import {
 import DatePicker from "react-native-datepicker";
 import styles from '../styles/AddTaskStyle';
 import { fetchData } from '../helpers/FetchData';
+import LoadingScreen from "../helpers/LoadingScreen";
+import TxtInputStyle2 from "../helpers/TxtInputStyle2";
+import BtnStyle2 from "../helpers/BtnStyle2";
 
 class AddTaskScreen extends Component {
   constructor(props) {
@@ -30,7 +32,7 @@ class AddTaskScreen extends Component {
   }
 
   static navigationOptions = {
-    title: "add task"
+    title: "Add task"
   };
 
   componentDidMount() {
@@ -98,30 +100,24 @@ class AddTaskScreen extends Component {
 
   render() {
     return this.state.isLoading ? (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="#000000" animating />
-      </View>
+      <LoadingScreen />
     ) : (
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.formContainer}>
-              <Text style={styles.textLabel}>Title*</Text>
-              <TextInput
-                style={styles.textInput}
-                placeholder="Title"
-                onChangeText={task_name => this.setState({ task_name })}
-              />
+              <TxtInputStyle2
+                title={"Title*"}
+                placeholder={"Title"}
+                parent={true}
+                updateVal={(val) => this.setState({ task_name: val })} />
 
-              <Text style={styles.textLabel}>Description</Text>
-              <TextInput
-                style={styles.textInputChildren}
-                placeholder="Description"
-                onChangeText={task_description =>
-                  this.setState({ task_description })
-                }
-              />
+              <TxtInputStyle2
+                title={"Description"}
+                placeholder={"Description"}
+                parent={false}
+                updateVal={(val) => this.setState({ task_description: val })} />
+
               <Text style={styles.textLabel}>Due date</Text>
-
               <DatePicker
                 style={{ width: 200 }}
                 date={this.state.due_date}
@@ -148,12 +144,11 @@ class AddTaskScreen extends Component {
                 }}
               />
             </View>
-            <TouchableOpacity
-              style={styles.saveButton}
-              onPress={this.checkInputs}
-            >
-              <Text style={styles.saveButtonText}>Save</Text>
-            </TouchableOpacity>
+            
+            <BtnStyle2
+              text={"Save"}
+              btnPress={this.checkInputs} />
+
           </View>
         </ScrollView>
       );

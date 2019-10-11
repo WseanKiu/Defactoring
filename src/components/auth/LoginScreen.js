@@ -4,13 +4,12 @@ import {
     Text,
     View,
     TextInput,
-    Button,
     TouchableHighlight,
     AsyncStorage,
     Image,
-    Alert
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import TxtInputStyle1 from '../helpers/TxtInputStyle1';
+import BtnStyle1 from '../helpers/BtnStyle1';
 
 export default class LoginScreen extends React.Component {
     constructor(props) {
@@ -38,10 +37,7 @@ export default class LoginScreen extends React.Component {
         const { username } = this.state;
         const { password } = this.state;
 
-        // alert(this.state.ip_server);
-
         fetch('http://' + this.state.ip_server + '/dlgtd/controller/loginController.php', {
-            // fetch('http://192.168.254.108/dlgtd/controller/loginController.php', {
             method: 'post',
             header: {
                 'Accept': 'application/json',
@@ -77,40 +73,30 @@ export default class LoginScreen extends React.Component {
         this.props.navigation.navigate("AuthScreen");
     };
 
-    onClickListener = (viewId) => {
-        Alert.alert("Alert", "button pressed" + viewId);
-    }
-
     render() {
         return (
             <View style={styles.container}>
                 <Image style={styles.logo} source={require('../../assets/logo/dlgtd_logo1.png')} />
-
                 <View style={styles.inputContainer}>
-                    {/* <Image style={styles.inputIcon} source={{ uri: 'https://png.icons8.com/user/ultraviolet/50/3498db' }} /> */}
-                    <TextInput style={styles.inputs}
-                        placeholder="username"
-                        keyboardType="email-address"
-                        underlineColorAndroid='transparent'
-                        onChangeText={(username) => this.setState({ username })} />
+                    <TxtInputStyle1
+                        placeholder={"Username"}
+                        hideText={false}
+                        updateVal={(val) => this.setState({ username: val })} />
+                </View>
+                <View style={styles.inputContainer}>
+                    <TxtInputStyle1
+                        placeholder={"Password"}
+                        hideText={true}
+                        updateVal={(val) => this.setState({ password: val })} />
                 </View>
 
-                <View style={styles.inputContainer}>
-                    {/* <Image style={styles.inputIcon} source={{ uri: 'https://png.icons8.com/message/ultraviolet/50/3498db' }} /> */}
-                    <TextInput style={styles.inputs}
-                        placeholder="Password"
-                        secureTextEntry={true}
-                        underlineColorAndroid='transparent'
-                        onChangeText={(password) => this.setState({ password })} />
-                </View>
-
-                <TouchableHighlight style={[styles.buttonContainer, styles.sendButton]} onPress={this.authLogin}>
-                    <Text style={styles.buttonText}>Login</Text>
-                </TouchableHighlight>
-
-                <TouchableHighlight onPress={() => this.props.navigation.navigate("Register")}>
-                    <Text>Register</Text>
-                </TouchableHighlight>
+                <BtnStyle1
+                    btnPress={this.authLogin}
+                    text={"Login"} />
+                    
+                <BtnStyle1
+                    btnPress={() => this.props.navigation.navigate("Register")}
+                    text={"Register"} />
             </View>
         );
     }
