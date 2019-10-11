@@ -8,12 +8,13 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon_2 from "react-native-vector-icons/MaterialCommunityIcons";
-import styles from "../styles/style";
-import DlgtdLogo from "../../assets/logo/DlgtdLogo";
-import FloatingAddButton from "../helpers/FloatingAddButton";
-import LoadingScreen from '../helpers/LoadingScreen';
+import styles from "../components/styles/style";
+import DlgtdLogo from "../assets/logo/DlgtdLogo";
+import FloatingAddButton from "../components/FloatingAddButton";
+import LoadingScreen from '../components/LoadingScreen';
 import Bar from "react-native-progress/Bar";
 import { fetchData } from '../helpers/FetchData';
+import { getUserTaskUrl, server_ip } from "../constants";
 
 class MainScreen extends React.Component {
   constructor(props) {
@@ -22,7 +23,6 @@ class MainScreen extends React.Component {
       username: null,
       taskContainer: [],
       isLoading: true,
-      ip_server: "",
       user_id: "",
       user_code: "",
     };
@@ -60,10 +60,7 @@ class MainScreen extends React.Component {
 
   componentDidMount() {
     this.timer = setInterval(() => {
-      const url =
-        "http://" +
-        this.state.ip_server +
-        "/dlgtd/controller/getUserTaskController.php";
+      const url = server_ip + getUserTaskUrl;
 
       let content = JSON.stringify({
         user_id: this.state.user_id
@@ -88,7 +85,6 @@ class MainScreen extends React.Component {
       username: null,
       taskContainer: [],
       isLoading: true,
-      ip_server: "",
       user_id: "",
     });
   }
@@ -98,7 +94,7 @@ class MainScreen extends React.Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          this.props.navigation.navigate("ViewTask", { task_id: task_id, server_ip: this.state.ip_server });
+          this.props.navigation.navigate("ViewTask", { task_id: task_id, server_ip: server_ip });
         }}
         style={{
           flex: 1,
@@ -158,10 +154,8 @@ class MainScreen extends React.Component {
 
   _getAsyncData = async () => {
     const user_id = await AsyncStorage.getItem("user_id");
-    const server_ip = await AsyncStorage.getItem("server_ip");
     const user_code = await AsyncStorage.getItem("user_code");
     this.setState({
-      ip_server: server_ip,
       user_id: user_id,
       user_code: user_code
     });

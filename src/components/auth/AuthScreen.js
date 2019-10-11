@@ -1,6 +1,6 @@
 import React from "react";
 import {AsyncStorage} from "react-native";
-import LoadingScreen from '../helpers/LoadingScreen';
+import LoadingScreen from '../LoadingScreen';
 
 export default class AuthLoadingScreen extends React.Component {
   constructor() {
@@ -12,7 +12,6 @@ export default class AuthLoadingScreen extends React.Component {
   // Fetch the token from storage
   _bootstrapAsync = async () => {
     const userToken = await AsyncStorage.getItem("userToken");
-    await AsyncStorage.setItem("server_ip", "192.168.0.175");
     this.props.navigation.navigate(userToken ? "App" : "Auth");
   };
 

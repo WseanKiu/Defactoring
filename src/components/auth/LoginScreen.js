@@ -1,15 +1,14 @@
 import React from 'react';
 import {
     StyleSheet,
-    Text,
     View,
-    TextInput,
-    TouchableHighlight,
     AsyncStorage,
     Image,
 } from 'react-native';
-import TxtInputStyle1 from '../helpers/TxtInputStyle1';
-import BtnStyle1 from '../helpers/BtnStyle1';
+import TxtInputStyle1 from '../TxtInputStyle1';
+import BtnStyle1 from '../BtnStyle1';
+import { loginUrl, server_ip } from '../../constants';
+import {fetchData} from "../../helpers/FetchData";
 
 export default class LoginScreen extends React.Component {
     constructor(props) {
@@ -17,37 +16,20 @@ export default class LoginScreen extends React.Component {
         this.state = {
             username: '',
             user_id: '',
-            ip_server: '',
             user_code: '',
         };
     }
 
-    componentDidMount() {
-        this._getAsyncData();
-    }
-
-    _getAsyncData = async () => {
-        const server_ip = await AsyncStorage.getItem("server_ip");
-        this.setState({
-            ip_server: server_ip
-        });
-    };
-
     authLogin = () => {
         const { username } = this.state;
         const { password } = this.state;
+        const url = server_ip + loginUrl;
+        let content = JSON.stringify({
+            username: username,
+            password: password,
+        });
 
-        fetch('http://' + this.state.ip_server + '/dlgtd/controller/loginController.php', {
-            method: 'post',
-            header: {
-                'Accept': 'application/json',
-                'Content-type': 'applicantion/json'
-            },
-            body: JSON.stringify({
-                username: username,
-                password: password,
-            })
-        })
+        fetchData(url, content)
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.error === false) {
@@ -62,7 +44,6 @@ export default class LoginScreen extends React.Component {
             })
             .catch((error) => {
                 alert(error + server_ip);
-                // console.error(error);
             });
     }
 

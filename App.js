@@ -9,26 +9,26 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import AuthScreen from './src/components/auth/AuthScreen';
-import MainScreen from './src/components/pages/MainScreen';
-import NotificationScreen from './src/components/pages/NotificationScreen';
+import MainScreen from './src/containers/MainScreen';
+import NotificationScreen from './src/containers/NotificationScreen';
 import LoginScreen from './src/components/auth/LoginScreen';
-import RegisterScreen from './src/components/pages/RegisterScreen';
+import RegisterScreen from './src/containers/RegisterScreen';
 import LogoutScreen from './src/components/auth/LogoutScreen';
-import AddTaskScreen from './src/components/pages/AddTaskScreen';
-import GroupTaskScreen from './src/components/pages/GroupTaskScreen';
-import ViewTaskScreen from './src/components/pages/ViewTaskScreen';
-import TaskCalendar from './src/components/helpers/TaskCalendar';
-import AddGrouptaskScreen from './src/components/pages/AddGroupTaskScreen';
-import ViewGroupTaskScreen from './src/components/pages/ViewGroupTaskScreen';
-import ViewLvl2Task from './src/components/helpers/lvl2Task/ViewLvl2Task';
-import DailyTaskScreen from './src/components/pages/DailyTaskScreen';
-import AddDailyTaskScreen from './src/components/pages/AddDailyTaskScreen';
-import ArchiveScreen from './src/components/pages/ArchiveScreen';
-import ProfileScreen from './src/components/pages/ProfileScreen';
-import editProfileScreen from './src/components/pages/editProfileScreen';
-import ChangePassScreen from './src/components/pages/ChangePassScreen';
-import SubscriptionScreen from './src/components/pages/SubscriptionScreen';
-import ThankU4SubsScreen from './src/components/pages/ThankU4SubsScreen';
+import AddTaskScreen from './src/containers/AddTaskScreen';
+import GroupTaskScreen from './src/containers/GroupTaskScreen';
+import ViewTaskScreen from './src/containers/ViewTaskScreen';
+import TaskCalendar from './src/components/TaskCalendar';
+import AddGrouptaskScreen from './src/containers/AddGroupTaskScreen';
+import ViewGroupTaskScreen from './src/containers/ViewGroupTaskScreen';
+import ViewLvl2Task from './src/components/lvl2Task/ViewLvl2Task';
+import DailyTaskScreen from './src/containers/DailyTaskScreen';
+import AddDailyTaskScreen from './src/containers/AddDailyTaskScreen';
+import ArchiveScreen from './src/containers/ArchiveScreen';
+import ProfileScreen from './src/containers/ProfileScreen';
+import editProfileScreen from './src/containers/editProfileScreen';
+import ChangePassScreen from './src/containers/ChangePassScreen';
+import SubscriptionScreen from './src/containers/SubscriptionScreen';
+import ThankU4SubsScreen from './src/containers/ThankU4SubsScreen';
 
 const AppStack = createStackNavigator(
     {
@@ -157,12 +157,3 @@ export default createAppContainer(createSwitchNavigator(
         initialRouteName: 'AuthScreen',
     }
 ));
-
-// const AppStack = createStackNavigator(
-//     {
-//         Main: MainScreen
-//     },
-//     {
-//         headerMode: 'none',
-//     }
-// );
