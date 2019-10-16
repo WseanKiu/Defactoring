@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import DatePicker from "react-native-datepicker";
 import styles from '../components/styles/AddTaskStyle';
-import { fetchData } from '../helpers/FetchData';
+import { fetchData2 } from '../helpers/FetchData';
 import LoadingScreen from "../components/LoadingScreen";
 import TxtInputStyle2 from "../components/TxtInputStyle2";
 import BtnStyle2 from "../components/BtnStyle2";
@@ -57,7 +57,7 @@ class AddTaskScreen extends Component {
     }
   };
 
-  addUserTask = () => {
+  addUserTask = async () => {
     const { task_name } = this.state;
     const { task_description } = this.state;
     const { due_date } = this.state;
@@ -72,18 +72,17 @@ class AddTaskScreen extends Component {
       task_type: 'solo'
     });
 
-    fetchData(url, content)
-      .then(response => response.json())
-      .then(responseJson => {
-        if (responseJson.error === false) {
-          this.props.navigation.navigate("Main");
-        } else {
-          alert(responseJson.msg + 'AddtaskScreen!');
-        }
-      })
-      .catch(error => {
-        alert(error + 'error: catch! AddtaskScreen!');
-      });
+    try {
+      let response = await fetchData2(url, content, "post");
+      let data = await response.json();
+      if (data.error === false) {
+        this.props.navigation.navigate("Main");
+      } else {
+        alert(responseJson.msg + 'AddtaskScreen!');
+      }
+    } catch (error) {
+      alert(error + 'error: catch! AddtaskScreen!');
+    }
   };
 
   _getAsyncData = async () => {
@@ -137,7 +136,7 @@ class AddTaskScreen extends Component {
                 }}
               />
             </View>
-            
+
             <BtnStyle2
               text={"Save"}
               btnPress={this.checkInputs} />

@@ -10,7 +10,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import DlgtdLogo from '../assets/logo/DlgtdLogo';
 import styles from '../components/styles/style';
 import LoadingScreen from '../components/LoadingScreen';
-import { fetchData } from '../helpers/FetchData';
+import { fetchData, fetchData2 } from '../helpers/FetchData';
 import { getArchiveTaskUrl, server_ip } from '../constants';
 
 class ArchiveScreen extends Component {

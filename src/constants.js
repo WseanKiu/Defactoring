@@ -1,119 +1,119 @@
 export const
-    server_ip = "http://192.168.0.175";
+    server_ip = "http://192.168.0.127/dlgtd/controller/";
 
 export const
-    viewTaskUrl = "/dlgtd/controller/viewTaskController.php";
+    viewTaskUrl = "viewTaskController.php";
 
 export const
-    addGroupSubtaskUrl = "/dlgtd/controller/addGroupSubtaskController.php";
+    addGroupSubtaskUrl = "addGroupSubtaskController.php";
 
 export const
-    updateGroupSubtaskUrl = "/dlgtd/controller/updateGroupSubtaskController.php";
+    updateGroupSubtaskUrl = "updateGroupSubtaskController.php";
 
 export const
-    deleteTaskUrl = "/dlgtd/controller/deleteTaskController.php";
+    deleteTaskUrl = "deleteTaskController.php";
 
 export const
-    deleteSubtaskUrl = "/dlgtd/controller/deleteSubtaskController.php";
+    deleteSubtaskUrl = "deleteSubtaskController.php";
 
 export const
-    loginUrl = "/dlgtd/controller/loginController.php";
+    loginUrl = "loginController.php";
 
 export const
-    deleteLvl2TaskUrl = "/dlgtd/controller/deleteLvl2TaskController.php";
+    deleteLvl2TaskUrl = "deleteLvl2TaskController.php";
 
 export const
-    getUserGroupTaskUrl = "/dlgtd/controller/getUserGroupTaskController.php";
+    getUserGroupTaskUrl = "getUserGroupTaskController.php";
 
 export const
-    addSubtaskUrl = "/dlgtd/controller/addSubTaskController.php";
+    addSubtaskUrl = "addSubTaskController.php";
 
 export const
-    getSubSubtaskUrl = "/dlgtd/controller/getSubSubtaskController.php";
+    getSubSubtaskUrl = "getSubSubtaskController.php";
 
 export const
-    addLvl2TaskUrl = "/dlgtd/controller/addLvl2TaskController.php";
+    addLvl2TaskUrl = "addLvl2TaskController.php";
 
 export const
-    getSubtaskInfoUrl = "/dlgtd/controller/getSubtaskInfoController.php";
+    getSubtaskInfoUrl = "getSubtaskInfoController.php";
 
 export const
-    updateTaskUrl = "/dlgtd/controller/updateTaskController.php";
+    updateTaskUrl = "updateTaskController.php";
 
 export const
-    getSubtaskUrl = "/dlgtd/controller/getSubTaskController.php";
+    getSubtaskUrl = "getSubTaskController.php";
 
 export const
-    updateSubtaskProgressUrl = "/dlgtd/controller/updateSubtaskProgressController.php";
+    updateSubtaskProgressUrl = "updateSubtaskProgressController.php";
 
 export const 
-    updateSubtaskUrl = "/dlgtd/controller/updateSubtaskController.php";
+    updateSubtaskUrl = "updateSubtaskController.php";
 
 export const
-    checkSubtaskUrl = "/dlgtd/controller/checkSubtaskController.php";
+    checkSubtaskUrl = "checkSubtaskController.php";
 
 export const
-    checkLvl2TaskUrl = "/dlgtd/controller/checkLvl2TaskController.php";
+    checkLvl2TaskUrl = "checkLvl2TaskController.php";
 
 export const
-    pokeUserUrl = "/dlgtd/controller/pokeUserController.php";
+    pokeUserUrl = "pokeUserController.php";
 
 export const
-    prioritizeTaskUrl = "/dlgtd/controller/prioritizeTaskController.php";
+    prioritizeTaskUrl = "prioritizeTaskController.php";
 
 export const
-    leaveTaskUrl = "/dlgtd/controller/leaveTaskController.php";
+    leaveTaskUrl = "leaveTaskController.php";
 
 export const
-    addTaskUrl = "/dlgtd/controller/addTaskController.php";
+    addTaskUrl = "addTaskController.php";
 
 export const
-    getArchiveTaskUrl = "/dlgtd/controller/getArchiveTaskController.php";
+    getArchiveTaskUrl = "getArchiveTaskController.php";
 
 export const
-    changePassUrl = "/dlgtd/controller/changePasswordController.php";
+    changePassUrl = "changePasswordController.php";
 
 export const
-    addDailyTaskUrl = "/dlgtd/controller/addDailyTaskController.php";
+    addDailyTaskUrl = "addDailyTaskController.php";
 
 export const
-    getDailyTaskUrl = "/dlgtd/controller/getDailyTaskController.php";
+    getDailyTaskUrl = "getDailyTaskController.php";
 
 export const
-    checkDailyTaskUrl = "/dlgtd/controller/checkDailyTaskController.php";
+    checkDailyTaskUrl = "checkDailyTaskController.php";
 
 export const
-    getUserInfoUrl = "/dlgtd/controller/getUserInfoController.php";
+    getUserInfoUrl = "getUserInfoController.php";
 
 export const
-    updateUserInfoUrl = "/dlgtd/controller/updateUserInfoController.php";
+    updateUserInfoUrl = "updateUserInfoController.php";
 
 export const
-    getUserTaskUrl = "/dlgtd/controller/getUserTaskController.php";
+    getUserTaskUrl = "getUserTaskController.php";
 
 export const
-    getUserNotifUrl = "/dlgtd/controller/getUserNotificationController.php";
+    getUserNotifUrl = "getUserNotificationController.php";
 
 export const
-    acceptTaskUrl = "/dlgtd/controller/acceptTaskController.php";
+    acceptTaskUrl = "acceptTaskController.php";
 
 export const
-    declineTaskUrl = "/dlgtd/controller/declineTaskController.php";
+    declineTaskUrl = "declineTaskController.php";
 
 export const
-    sendFeedbackUrl = "/dlgtd/controller/sendFeedbackController.php";
+    sendFeedbackUrl = "sendFeedbackController.php";
 
 export const
-    registerUserUrl = "/dlgtd/controller/registerController.php";
+    registerUserUrl = "registerController.php";
 
 export const
-    putTaskArchiveUrl = "/dlgtd/controller/putTaskArchiveController.php";
+    putTaskArchiveUrl = "putTaskArchiveController.php";
 
 export const
-    getPaymentTypeUrl = "/dlgtd/controller/getPaymentTypeController.php";
+    getPaymentTypeUrl = "getPaymentTypeController.php";
 
 export const
-    paypalFormUrl = "/dlgtd/controller/paypalForm.html";
+    paypalFormUrl = "paypalForm.html";
 
 export const
     thumbsUpUrl = "https://png.icons8.com/good-quality/ultraviolet/200/3498db";

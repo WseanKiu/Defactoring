@@ -67,7 +67,7 @@ class GroupTaskScreen extends Component {
     };
 
     db_check = async (url, content) => {
-        let response = await fetchData2(url, content, "post");
+        let response = await fetchData(url, content, "post");
         let data = await response.json();
         this.setState({
             taskContainer: data.items,
